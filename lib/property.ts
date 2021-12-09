@@ -10,6 +10,10 @@ export default interface Property {
   kitchens: number;
   parkings: number;
   photo: string;
+  price: number;
+  type: string;
+  address: string;
+  description: string;
 }
 
 export const save = async (property: Property) => {

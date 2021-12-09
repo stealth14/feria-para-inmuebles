@@ -26,6 +26,7 @@ export default function PropertyCard(props: PropertyCardProps) {
           <img src={property.photo} alt="foto de propiedad" />
         </Col>
         <Col className={styles.content} span={16}>
+          <Info property={property} />
           <Features property={property} />
         </Col>
       </Row>
@@ -33,6 +34,23 @@ export default function PropertyCard(props: PropertyCardProps) {
   );
 }
 
+interface InfoProps {
+  property: Property;
+}
+
+const Info = (props: InfoProps) => {
+  const { property } = props;
+
+  return (
+    <div className={styles.Info}>
+      <h2> USD {property.price}</h2>
+      <h3>
+        {property.type ?? "Casa"} - {property.address}
+      </h3>
+      <p>{property.description}</p>
+    </div>
+  );
+};
 interface FeatureProps {
   property: Property;
 }

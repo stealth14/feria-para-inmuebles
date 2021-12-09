@@ -1,5 +1,4 @@
 .container {
-  max-width: 80%;
   height: 250px;
   border: 1px solid #cbd6dc;
   margin-top: 10px;
@@ -26,8 +25,23 @@
 .Features {
   display: flex;
   flex-direction: column;
-
   .row {
     display: flex;
+  }
+}
+
+.Info {
+  margin-left: 9px;
+  display: grid;
+  text-align: left;
+  span {
+    overflow: ellipsis;
+    white-space: nowrap;
+  }
+  p {
+    width: 95%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 }
