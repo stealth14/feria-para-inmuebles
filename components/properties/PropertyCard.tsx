@@ -14,21 +14,24 @@ import {
 
 interface PropertyCardProps {
   property: Property;
+  actions?: React.ReactNode;
 }
 
 export default function PropertyCard(props: PropertyCardProps) {
-  const { property } = props;
+  const { property, actions } = props;
+  const { phone, photo } = property;
   return (
     <div className={styles.container}>
       <Row justify="start">
         <Col className={styles.photo} span={8}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={property.photo} alt="foto de propiedad" />
+          <img src={photo} alt="foto de propiedad" />
         </Col>
-        <Col className={styles.content} span={16}>
+        <Col className={styles.content} span={11}>
           <Info property={property} />
           <Features property={property} />
         </Col>
+        {actions && <Col span={5}>{actions}</Col>}
       </Row>
     </div>
   );

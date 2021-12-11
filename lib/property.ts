@@ -14,6 +14,7 @@ export default interface Property {
   type: string;
   address: string;
   description: string;
+  phone: string;
 }
 
 export const save = async (property: Property) => {

@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useProperties } from "@/lib/property";
 import PropertyCard from "@/components/properties/PropertyCard";
-import styles from "./../properties/properties.module.scss";
+import styles from "@/pages/properties/properties.module.scss";
 
 function Index() {
   const { properties, isLoading, isError } = useProperties();

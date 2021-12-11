@@ -1,0 +1,25 @@
+.button-base {
+  -webkit-touch-callout: none; /* iOS Safari */
+  -webkit-user-select: none; /* Safari */
+  -khtml-user-select: none; /* Konqueror HTML */
+  -moz-user-select: none; /* Old versions of Firefox */
+  -ms-user-select: none; /* Internet Explorer/Edge */
+  user-select: none; /* Non-prefixed version, currently supported by Chrome, Edge, Opera and Firefox */
+  cursor: pointer;
+}
+
+.container {
+  @extend .button-base;
+  margin: auto 10px;
+  display: flex;
+  align-items: center;
+  color: #259d25;
+  font-weight: 600;
+  border-radius: 5px;
+  border: solid 1px #259d25;
+  justify-content: center;
+  padding: 3px 10px;
+  span {
+    margin: 0px 4px;
+  }
+}
