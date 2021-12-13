@@ -1,5 +1,10 @@
 .container {
-  padding: 20px 20px 20px 20px;
+  min-height: 100vh;
+  padding: 0 0.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 .header {
@@ -16,13 +21,11 @@
 }
 
 .actions {
-  display: flex;
-  justify-content: flex-end;
   cursor: pointer;
   .action {
     border-left: solid 1px lightgray;
     border-bottom: solid 1px lightgray;
-    padding: 20px 25px;
+    padding: 5px 20px;
     background-color: #e7edf0;
     border-radius: 0px 10px 0px 10px;
   }

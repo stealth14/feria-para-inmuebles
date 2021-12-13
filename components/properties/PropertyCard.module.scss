@@ -1,15 +1,17 @@
 .container {
-  height: 250px;
-  border: 1px solid #cbd6dc;
+  min-height: 250px;
   margin-top: 10px;
   border-radius: 10px;
+  .ant-row {
+    border: 1px solid #cbd6dc;
+  }
 }
 
 .photo {
   border-radius: 10px 0px 0px 10px;
   img {
     width: 100%;
-    height: 250px;
+    height: 300px;
     border-radius: inherit;
     object-fit: cover;
     object-position: center;
@@ -23,18 +25,18 @@
 }
 
 .Features {
-  width: 70%;
   display: flex;
   flex-direction: column;
-  .row {
-    display: flex;
-  }
 }
 
 .Info {
   margin-left: 9px;
   display: grid;
   text-align: left;
+  .head {
+    display: flex;
+    justify-content: space-between;
+  }
   span {
     overflow: ellipsis;
     white-space: nowrap;
