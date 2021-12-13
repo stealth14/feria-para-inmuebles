@@ -14,3 +14,23 @@
 .space {
   height: 70%;
 }
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  cursor: pointer;
+  .action {
+    border-left: solid 1px lightgray;
+    border-bottom: solid 1px lightgray;
+    padding: 20px 25px;
+    background-color: #e7edf0;
+    border-radius: 0px 10px 0px 10px;
+  }
+  .action:hover {
+    border: solid 2px rgba(0, 0, 0, 0.475);
+  }
+}
+
+.ellipsis {
+  font-size: 20px;
+}
