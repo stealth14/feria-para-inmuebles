@@ -9,11 +9,13 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
 import "@/components/globals/Button";
 import Button from "@/components/globals/Button";
+import { useRouter } from "next/router";
 
 function Index() {
   const { properties, isLoading, isError } = useProperties();
   const { useBreakpoint } = Grid;
   const screens = useBreakpoint();
+  const router = useRouter();
 
   return (
     <div className={styles.container}>
@@ -49,7 +51,7 @@ function Index() {
                     <div className={styles.action}>
                       <ButtonBase
                         onClick={() => {
-                          console.log("hola amigos");
+                          router.push(`/properties/${property.id}`);
                         }}
                       >
                         <FontAwesomeIcon

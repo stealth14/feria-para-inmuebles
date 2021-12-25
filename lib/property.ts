@@ -27,6 +27,35 @@ export const save = async (property: Property) => {
   }
 };
 
+export const get = async (id: string) => {
+  const path = `/properties/${id}`;
+
+  try {
+    const response = await axios.get(
+      process.env.NEXT_PUBLIC_API_BASE_URL + String(path)
+    );
+
+    const property: Property = response.data;
+
+    return [property, null];
+  } catch (error: any) {
+    return [null, error];
+  }
+};
+
+export const getAll = async () => {
+  try {
+    const response = await axios.get(
+      process.env.NEXT_PUBLIC_API_BASE_URL + "/properties"
+    );
+
+    const properties: Property[] = response.data;
+
+    return [properties, null];
+  } catch (error: any) {
+    return [null, error];
+  }
+};
 export function useProperties() {
   const fetcher = (url: string) => axios.get(url).then((res) => res.data);
 
