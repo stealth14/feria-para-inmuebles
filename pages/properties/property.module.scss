@@ -1,0 +1,38 @@
+.container {
+  margin: 5px;
+}
+
+.Info {
+  margin-left: 9px;
+  display: grid;
+  text-align: left;
+  .head {
+    display: flex;
+    justify-content: space-between;
+  }
+  span {
+    overflow: ellipsis;
+    white-space: nowrap;
+  }
+  p {
+    width: 95%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
+.PropertyCarousel {
+  .tile {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 400px;
+    line-height: 160px;
+    background: lightgray;
+    text-align: center;
+  }
+  .photo {
+    margin: auto;
+  }
+}
