@@ -3,6 +3,10 @@ import Property, { getAll, get, useProperties } from "@/lib/property";
 import styles from "./property.module.scss";
 import Features from "@/components/properties/Features";
 import { Carousel } from "antd";
+import AnchorBase from "@/components/globals/AnchorBase";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPen } from "@fortawesome/free-solid-svg-icons";
+import { useRouter } from "next/router";
 
 export async function getStaticPaths() {
   const [properties] = await getAll();
@@ -22,15 +26,34 @@ export async function getStaticProps({ params }) {
 
 export default function Page(props: { property: Property }) {
   const { property } = props;
+  const router = useRouter();
+
   return (
     <div className={styles.container}>
-      <div className={styles.Info}>
-        <div className={styles.head}>
-          <h2> USD {property.price}</h2>
+      <div style={{ display: "flex" }}>
+        <div className={styles.info}>
+          <div className={styles.head}>
+            <h2> USD {property.price}</h2>
+          </div>
+          <h3>
+            {property?.type} - {property.address}
+          </h3>
         </div>
-        <h3>
-          {property?.type} - {property.address}
-        </h3>
+        <div className={styles.actions}>
+          <AnchorBase
+            className={styles.AnchorBase}
+            onClick={() => {
+              router.push(`/properties/add`);
+            }}
+          >
+            <FontAwesomeIcon className={styles.icon} icon={faPen} />
+            <span
+              style={{ textAlign: "center", fontSize: 12, fontWeight: "bold" }}
+            >
+              Editar publicación
+            </span>
+          </AnchorBase>
+        </div>
       </div>
       <PropertyCarousel property={property} />
       <Features property={property} />
