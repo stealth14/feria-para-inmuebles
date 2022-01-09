@@ -1,5 +1,5 @@
 import React from "react";
-import Property, { getAll, get, useProperties } from "@/lib/property";
+import Property, { getAll, get } from "@/lib/property";
 import styles from "./property.module.scss";
 import Features from "@/components/properties/Features";
 import { Carousel } from "antd";
@@ -43,7 +43,10 @@ export default function Page(props: { property: Property }) {
           <AnchorBase
             className={styles.AnchorBase}
             onClick={() => {
-              router.push(`/properties/add`);
+              router.push({
+                pathname: "/properties/add",
+                query: { id: property.id },
+              });
             }}
           >
             <FontAwesomeIcon className={styles.icon} icon={faPen} />
