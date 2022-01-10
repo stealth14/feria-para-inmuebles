@@ -1,7 +1,9 @@
 import React from "react";
-import { Form, Input, Button, Checkbox, Col, Row, Grid } from "antd";
+import { Form, Input, Button, Col, Row } from "antd";
 import Property, { useProperty, save } from "@/lib/property";
 import { useRouter } from "next/router";
+import FeatureSelect from "@/components/properties/FeatureSelect";
+
 import styles from "./add.module.scss";
 
 export async function getServerSideProps({ query }) {
@@ -10,37 +12,51 @@ export async function getServerSideProps({ query }) {
 }
 
 export default function Add() {
+  const [form] = Form.useForm();
   const router = useRouter();
   const { query } = router;
   const { id } = query;
   const { property, isLoading, isError } = useProperty(id as string);
 
-  const onFinish = (newProperty: Property) => {};
+  const onFinish = (submittedProperty: Property) => {
+    console.log("submittedProperty", submittedProperty);
+  };
 
   return (
     <div className={styles.container}>
       <h2>Publicar</h2>
-      <h3>Características</h3>
-      <Form
-        name="basic"
-        initialValues={{ remember: true }}
-        onFinish={onFinish}
-        autoComplete="off"
-      >
+      <div className={styles.subtitle}>
+        <h3>Características</h3>
+      </div>
+      <Form form={form} onFinish={onFinish}>
         <Row justify="center">
           <Col span={24}>
-            <div>
-              <Form.Item
-                label="Título"
-                name="title"
-                rules={[{ required: true, message: "Título obligatorio" }]}
-              >
-                <Input />
-              </Form.Item>
-            </div>
+            <Form.Item
+              label="Título"
+              name="title"
+              rules={[{ required: true, message: "Título obligatorio" }]}
+            >
+              <Input />
+            </Form.Item>
           </Col>
         </Row>
-        <Row justify="center"></Row>
+        <Row justify="center">
+          <Col span={24}>
+            <FeatureSelect name={"bathrooms"} label="Baños" />
+          </Col>
+          <Col span={24}>
+            <FeatureSelect name={"dormitories"} label="Dormitorios" />
+          </Col>
+          <Col span={24}>
+            <FeatureSelect name={"kitchens"} label="Cocinas" />
+          </Col>
+          <Col span={24}>
+            <FeatureSelect name={"parkings"} label="Dormitorios" />
+          </Col>
+        </Row>
+        <Row justify="center">
+          <Button htmlType="submit">Publicar</Button>
+        </Row>
       </Form>
     </div>
   );
