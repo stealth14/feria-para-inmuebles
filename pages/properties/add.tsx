@@ -3,6 +3,7 @@ import { Form, Input, Button, Col, Row } from "antd";
 import Property, { useProperty, save } from "@/lib/property";
 import { useRouter } from "next/router";
 import FeatureSelect from "@/components/properties/FeatureSelect";
+import PhotosPicker from "@/components/globals/PhotosPicker";
 
 import styles from "./add.module.scss";
 
@@ -51,9 +52,13 @@ export default function Add() {
             <FeatureSelect name={"kitchens"} label="Cocinas" />
           </Col>
           <Col span={24}>
-            <FeatureSelect name={"parkings"} label="Dormitorios" />
+            <FeatureSelect name={"parkings"} label="Parqueaderos" />
           </Col>
         </Row>
+        <div className={styles.subtitle}>
+          <h3>Fotos</h3>
+        </div>
+        <PhotosPicker />
         <Row justify="center">
           <Button htmlType="submit">Publicar</Button>
         </Row>
