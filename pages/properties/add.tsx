@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Form, Input, Button, Col, Row } from "antd";
 import Property, { useProperty, save } from "@/lib/property";
 import { useRouter } from "next/router";
@@ -13,14 +13,27 @@ export async function getServerSideProps({ query }) {
 }
 
 export default function Add() {
-  const [form] = Form.useForm();
   const router = useRouter();
   const { query } = router;
   const { id } = query;
   const { property, isLoading, isError } = useProperty(id as string);
 
+  const [form] = Form.useForm();
+
+  const [fileList, setFileList] = useState([]);
+
   const onFinish = (submittedProperty: Property) => {
+    // photos validation
+    if (fileList.length < 1) {
+      alert("Please select at least one photo");
+      return;
+    }
+
     console.log("submittedProperty", submittedProperty);
+  };
+
+  const handleChange = ({ file, fileList }) => {
+    setFileList(fileList);
   };
 
   return (
@@ -58,9 +71,11 @@ export default function Add() {
         <div className={styles.subtitle}>
           <h3>Fotos</h3>
         </div>
-        <PhotosPicker />
+        <PhotosPicker handleChange={handleChange} fileList={fileList} />
         <Row justify="center">
-          <Button htmlType="submit">Publicar</Button>
+          <Button className={styles["submit-button"]} htmlType="submit">
+            Publicar
+          </Button>
         </Row>
       </Form>
     </div>
