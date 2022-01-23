@@ -1,11 +1,9 @@
 import React, { useState } from "react";
 import { Upload, Modal } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
-import { UploadFile } from "antd/lib/upload/interface";
 import styles from "./PhotosPicker.module.scss";
-import { faLessThanEqual } from "@fortawesome/free-solid-svg-icons";
 
-function getBase64(file) {
+function getBase64(file: Blob) {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
     reader.readAsDataURL(file);
@@ -14,11 +12,14 @@ function getBase64(file) {
   });
 }
 
-export default function PhotosPicker(props: {
+interface PhotosPickerProps {
   fileList: Array<any>;
   handleChange: (fileList: any) => void;
-}) {
-  const { fileList, handleChange } = props;
+  maxCount: number;
+}
+
+export default function PhotosPicker(props: PhotosPickerProps) {
+  const { fileList, handleChange, maxCount } = props;
   const [previewVisible, setPreviewVisible] = useState(false);
   const [previewImage, setPreviewImage] = useState("");
   const [previewTitle, setPreviewTitle] = useState("");
@@ -42,20 +43,28 @@ export default function PhotosPicker(props: {
   return (
     <div>
       <Upload
-        maxCount={3}
+        accept="image/*"
+        maxCount={maxCount ?? 3}
         listType="picture-card"
         fileList={fileList}
         onPreview={handlePreview}
         onChange={handleChange}
-        beforeUpload={(file) => {
-          console.log("file:", file);
-          return false;
+        beforeUpload={(file: File) => {
+          const maxSize = 1048576; // 1MB
+          if (file.size > maxSize) {
+            alert("La imagen es muy grande");
+            return Upload.LIST_IGNORE;
+          }
+
+          return true;
         }}
       >
-        <div className={styles.button}>
-          <PlusOutlined className={styles.icon} />
-          <div>Agregar</div>
-        </div>
+        {fileList?.length < maxCount && (
+          <div className={styles.button}>
+            <PlusOutlined className={styles.icon} />
+            <div>Agregar</div>
+          </div>
+        )}
       </Upload>
       <Modal
         visible={previewVisible}

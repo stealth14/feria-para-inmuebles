@@ -32,23 +32,27 @@ export default function Add() {
     console.log("submittedProperty", submittedProperty);
   };
 
-  const handleChange = ({ file, fileList }) => {
+  const handleChange = ({ fileList }) => {
     setFileList(fileList);
   };
 
   return (
     <div className={styles.container}>
       <h2>Publicar</h2>
-      <div className={styles.subtitle}>
-        <h3>Características</h3>
-      </div>
       <Form form={form} onFinish={onFinish}>
+        <div className={styles.subtitle}>
+          <h3>Características</h3>
+        </div>
         <Row justify="center">
           <Col span={24}>
             <Form.Item
               label="Título"
               name="title"
-              rules={[{ required: true, message: "Título obligatorio" }]}
+              rules={[
+                { required: true, message: "Título obligatorio" },
+                { min: 30, message: "Título muy corto" },
+                { max: 50, message: "Título muy largo" },
+              ]}
             >
               <Input />
             </Form.Item>
@@ -71,7 +75,11 @@ export default function Add() {
         <div className={styles.subtitle}>
           <h3>Fotos</h3>
         </div>
-        <PhotosPicker handleChange={handleChange} fileList={fileList} />
+        <PhotosPicker
+          maxCount={4}
+          handleChange={handleChange}
+          fileList={fileList}
+        />
         <Row justify="center">
           <Button className={styles["submit-button"]} htmlType="submit">
             Publicar
