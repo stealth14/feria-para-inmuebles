@@ -42,6 +42,10 @@ export default function Page(props: { property: Property }) {
         <div className={styles.actions}>
           <AnchorBase
             className={styles.AnchorBase}
+            style={{
+              width: 100,
+              height: 100,
+            }}
             onClick={() => {
               router.push({
                 pathname: "/properties/add",
