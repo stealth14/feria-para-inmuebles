@@ -44,7 +44,7 @@ export default function Home() {
           </Col>
         </Row>
         <Row>
-          <Col span={8}>
+          <Col span={screens.xs ? 10 : 8}>
             <div className={styles.content}>
               <h2>Compra y venta de {screens.sm && "bienes"} inmuebles</h2>
               <p>Publica tus propiedades o encuentra tu propiedad ideal</p>
@@ -53,7 +53,7 @@ export default function Home() {
               </AnchorBase>
             </div>
           </Col>
-          <Col span={16}>
+          <Col span={screens.xs ? 14 : 16}>
             <div className={styles.header}>
               {screens.sm ? (
                 <img src="/header.png" alt="cabecera" />
@@ -68,6 +68,9 @@ export default function Home() {
           </Col>
         </Row>
       </div>
+      <Row justify="center">
+        <h2 style={{ marginTop: 20 }}>Ofrecemos</h2>
+      </Row>
       <Row justify="center">
         <Col style={custom} xs={24} sm={12} md={8} lg={8} xl={8} xxl={8}>
           <Card
