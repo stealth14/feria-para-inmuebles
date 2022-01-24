@@ -9,7 +9,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 
 import AnchorBase from "@/components/globals/AnchorBase";
-import { useEffect } from "react";
+import { useRouter } from "next/router";
 
 const { useBreakpoint } = Grid;
 
@@ -34,6 +34,7 @@ const custom = { display: "flex", justifyContent: "center", marginTop: "2rem" };
 
 export default function Home() {
   const screens = useBreakpoint();
+  const router = useRouter();
 
   return (
     <div className={styles.container}>
@@ -48,7 +49,12 @@ export default function Home() {
             <div className={styles.content}>
               <h2>Compra y venta de {screens.sm && "bienes"} inmuebles</h2>
               <p>Publica tus propiedades o encuentra tu propiedad ideal</p>
-              <AnchorBase className={styles.action} onClick={() => {}}>
+              <AnchorBase
+                className={styles.action}
+                onClick={() => {
+                  router.push("/register");
+                }}
+              >
                 Comenzar
               </AnchorBase>
             </div>
