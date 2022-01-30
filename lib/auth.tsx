@@ -65,21 +65,11 @@ function useAuthProvider() {
   async function login(user: User) {
     try {
       const response = await publicApi.post("/login", user);
-      handleUser(response.data.user);
-      return { status: "success" };
+      const loggedUser = response.data;
+      handleUser(loggedUser);
+      return [loggedUser, null];
     } catch (error) {
-      if (error.response) {
-        return {
-          status: "error",
-          message: lang(error.response.data.message),
-        };
-      } else if (error.request) {
-        console.log("error.request", error.request);
-        return { status: "error", message: null };
-      } else {
-        console.log("error.config", error.config);
-        return { status: "error", message: null };
-      }
+      return [null, error];
     }
   }
 

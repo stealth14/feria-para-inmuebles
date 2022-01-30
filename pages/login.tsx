@@ -1,13 +1,31 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styles from "./login.module.scss";
 import { Form, Input, Button, Col, Row } from "antd";
 import User from "@/lib/auth";
+import { useAuth } from "@/lib/auth";
+import { useRouter } from "next/router";
+import lang from "@/constants/lang";
 
 export default function Login() {
   const [form] = Form.useForm();
+  const { login } = useAuth();
+  const router = useRouter();
 
-  const onFinish = (user: User) => {
-    console.log("user:", user);
+  useEffect(() => {
+    console.log("rendered");
+  }, []);
+
+  const onFinish = async (submittedUser: User) => {
+    console.log("excecuted");
+
+    const [loggedUser, error] = await login(submittedUser);
+    if (loggedUser) {
+      router.push("/properties");
+    }
+
+    if (error?.response) {
+      alert(lang("invalid_credentials"));
+    }
   };
 
   return (
