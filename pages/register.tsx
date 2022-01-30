@@ -1,21 +1,46 @@
 import React, { useState } from "react";
 import styles from "./register.module.scss";
 import { Form, Input, Button, Col, Row } from "antd";
-import User from "@/lib/user";
+import User from "@/lib/auth";
 import PhotosPicker from "@/components/globals/PhotosPicker";
+import { useAuth } from "@/lib/auth";
+import { useRouter } from "next/router";
+import lang from "@/constants/lang";
 
 export default function Register() {
+  const { register } = useAuth();
   const [form] = Form.useForm();
   const [fileList, setFileList] = useState([]);
+  const router = useRouter();
 
-  const onFinish = (user: User) => {
+  const onFinish = async (user: User) => {
     // photos validation
     if (fileList.length < 1) {
-      alert("Please select at least one photo");
+      alert(lang("photo_required"));
       return;
     }
 
-    console.log("user:", user);
+    const [savedUser, error] = await register({
+      ...user,
+      avatar: fileList[0].originFileObj,
+    });
+
+    if (savedUser) router.push("/properties");
+
+    if (error) {
+      if (error.response) {
+        //handle exceptions
+        const exceptions = JSON.parse(error.response.data);
+
+        var alertMessage = "" as string;
+
+        for (const exception in exceptions) {
+          alertMessage = `${exceptions[exception]}` + "\n";
+        }
+
+        alert(alertMessage);
+      }
+    }
   };
 
   const handleChange = ({ fileList }) => {
@@ -48,7 +73,7 @@ export default function Register() {
           <Col span={24}>
             <Form.Item
               label="Apellido"
-              name="surname"
+              name="last_name"
               rules={[{ required: true, message: "Apellido obligatorio" }]}
             >
               <Input />
@@ -59,6 +84,15 @@ export default function Register() {
               label="Contraseña"
               name="password"
               rules={[{ required: true, message: "Contraseña obligatoria" }]}
+            >
+              <Input.Password />
+            </Form.Item>
+          </Col>
+          <Col span={24}>
+            <Form.Item
+              label="Contraseña"
+              name="password_confirmation"
+              rules={[{ required: true, message: "Confirma tu contraseña" }]}
             >
               <Input.Password />
             </Form.Item>

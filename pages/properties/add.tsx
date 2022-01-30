@@ -4,6 +4,7 @@ import Property, { useProperty, save } from "@/lib/property";
 import { useRouter } from "next/router";
 import FeatureSelect from "@/components/properties/FeatureSelect";
 import PhotosPicker from "@/components/globals/PhotosPicker";
+import lang from "@/constants/lang";
 
 import styles from "./add.module.scss";
 
@@ -25,7 +26,7 @@ export default function Add() {
   const onFinish = (submittedProperty: Property) => {
     // photos validation
     if (fileList.length < 1) {
-      alert("Please select at least one photo");
+      alert(lang("photo_required"));
       return;
     }
 

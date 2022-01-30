@@ -1,12 +1,13 @@
 import "../styles/globals.css";
 import GeneralNav from "@/components/GeneralNav";
+import { AuthProvider } from "@/lib/auth";
 
 function MyApp({ Component, pageProps }) {
   return (
-    <div>
+    <AuthProvider>
       <GeneralNav />
       <Component {...pageProps} />
-    </div>
+    </AuthProvider>
   );
 }
 

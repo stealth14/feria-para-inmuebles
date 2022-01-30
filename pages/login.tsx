@@ -1,7 +1,7 @@
 import React from "react";
 import styles from "./login.module.scss";
 import { Form, Input, Button, Col, Row } from "antd";
-import User from "@/lib/user";
+import User from "@/lib/auth";
 
 export default function Login() {
   const [form] = Form.useForm();
