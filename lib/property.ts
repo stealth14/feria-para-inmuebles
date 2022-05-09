@@ -76,7 +76,7 @@ export function useProperty(id: string) {
   const fetcher = (url: string) => axios.get(url).then((res) => res.data);
 
   const { data, error } = useSWR(
-    `${process.env.NEXT_PUBLIC_API_BASE_URL}/properties/${id}`,
+    `${process.env.NEXT_PUBLIC_API_BASE_URL}properties/${id}`,
     fetcher
   );
 
