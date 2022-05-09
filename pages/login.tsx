@@ -54,7 +54,7 @@ export default function Login() {
         </Row>
         <Row justify="center">
           <Button className={styles["submit-button"]} htmlType="submit">
-            Registrarse
+            Entrar a mi cuenta
           </Button>
         </Row>
       </Form>
