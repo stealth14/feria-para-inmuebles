@@ -56,11 +56,12 @@ export const getAll = async () => {
     return [null, error];
   }
 };
+
 export function useProperties() {
   const fetcher = (url: string) => axios.get(url).then((res) => res.data);
 
   const { data, error } = useSWR(
-    process.env.NEXT_PUBLIC_API_BASE_URL + "/properties",
+    process.env.NEXT_PUBLIC_API_BASE_URL + "properties",
     fetcher
   );
 
