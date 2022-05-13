@@ -5,8 +5,36 @@ import Features from "@/components/properties/Features";
 import { Carousel } from "antd";
 import AnchorBase from "@/components/globals/AnchorBase";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPen } from "@fortawesome/free-solid-svg-icons";
+import { faPen, faTrash, IconDefinition } from "@fortawesome/free-solid-svg-icons";
 import { useRouter } from "next/router";
+
+interface ActionProps {
+  label: string;
+  onClick: () => void;
+  faIcon: IconDefinition;
+}
+
+const Action = (props: ActionProps) => {
+  const { label, faIcon, onClick } = props;
+
+  return (
+    <div>
+      <AnchorBase
+        className={styles.AnchorBase}
+        style={{
+          width: 100,
+          height: 100,
+        }}
+        onClick={onClick}
+      >
+        <FontAwesomeIcon className={styles.icon} icon={faIcon} />
+        <span style={{ textAlign: "center", fontSize: 12, fontWeight: "bold" }}>
+          {label}
+        </span>
+      </AnchorBase>
+    </div>
+  );
+};
 
 export async function getStaticPaths() {
   const [properties] = await getAll();
@@ -39,28 +67,25 @@ export default function Page(props: { property: Property }) {
             {property?.type} - {property.address}
           </h3>
         </div>
-        <div className={styles.actions}>
-          <AnchorBase
-            className={styles.AnchorBase}
-            style={{
-              width: 100,
-              height: 100,
-            }}
-            onClick={() => {
-              router.push({
-                pathname: "/properties/add",
-                query: { id: property.id },
-              });
-            }}
-          >
-            <FontAwesomeIcon className={styles.icon} icon={faPen} />
-            <span
-              style={{ textAlign: "center", fontSize: 12, fontWeight: "bold" }}
-            >
-              Editar publicación
-            </span>
-          </AnchorBase>
-        </div>
+      </div>
+      <div className={styles.actions}>
+        <Action
+          label="Editar"
+          faIcon={faPen}
+          onClick={() => {
+            router.push({
+              pathname: "/properties/add",
+              query: { id: property.id },
+            });
+          }}
+        />
+        <Action
+          label="Eliminar"
+          faIcon={faTrash}
+          onClick={() => {
+            alert("Eliminando");
+          }}
+        />
       </div>
       <PropertyCarousel property={property} />
       <Features property={property} />
