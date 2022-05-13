@@ -6,12 +6,15 @@
   margin: 0 10px;
 }
 
-.subtitle {
-  width: 100%;
-}
-
 .submit-button {
   margin-top: 30px;
   margin-bottom: 30px;
   width: 100%;
+}
+
+.hint {
+  display: flex;
+  margin: 20px auto;
+  flex-direction: column;
+  text-align: center;
 }

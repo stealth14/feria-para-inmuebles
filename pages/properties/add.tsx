@@ -39,11 +39,10 @@ export default function Add() {
 
   return (
     <div className={styles.container}>
-      <h2>Publicar</h2>
+      <div className={styles.hint}>
+        <p> Por favor, ingresa la información de la propiedad </p>
+      </div>
       <Form form={form} onFinish={onFinish}>
-        <div className={styles.subtitle}>
-          <h3>Características</h3>
-        </div>
         <Row justify="center">
           <Col span={24}>
             <Form.Item
