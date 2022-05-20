@@ -1,5 +1,5 @@
 import React from "react";
-import { useProperties } from "@/lib/property";
+import Property, { useProperties } from "@/lib/property";
 import { Col, Row, Grid } from "antd";
 
 import PropertyCard from "@/components/properties/PropertyCard";
@@ -15,13 +15,10 @@ function Index() {
   const { properties, isLoading, isError } = useProperties();
   const { useBreakpoint } = Grid;
   const screens = useBreakpoint();
-  const router = useRouter();
 
   return (
     <div className={styles.container}>
       {isLoading && <div>Loading...</div>}
-
-      {isError && <div>Error</div>}
       <div className={styles.header}>
         <h1>Mis publicaciones</h1>
       </div>
@@ -38,36 +35,65 @@ function Index() {
           <span>4.769 Departamentos quito en alquiler en Ecuador</span>
         </Row>
       </div>
-
-      <div className={styles.list}>
-        {properties &&
-          properties.map((property) => {
-            return (
-              <PropertyCard
-                key={property.id}
-                property={property}
-                actions={
-                  <div className={styles.actions}>
-                    <div className={styles.action}>
-                      <ButtonBase
-                        onClick={() => {
-                          router.push(`/properties/${property.id}`);
-                        }}
-                      >
-                        <FontAwesomeIcon
-                          className={styles.ellipsis}
-                          icon={faArrowRight}
-                        />
-                      </ButtonBase>
-                    </div>
-                  </div>
-                }
-              />
-            );
-          })}
-      </div>
+      <PropertiesList
+        {...{
+          properties,
+          isLoading,
+          isError,
+          noProperties: properties.length === 0,
+        }}
+      />
     </div>
   );
 }
+
+interface PropertiesList {
+  isError: boolean;
+  isLoading: boolean;
+  noProperties: boolean;
+  properties: Property[];
+}
+
+const PropertiesList = (props: PropertiesList) => {
+  const { properties, isError, isLoading, noProperties } = props;
+  const router = useRouter();
+
+  if (isError) {
+    return <div className={styles.isError}>Error</div>;
+  }
+
+  if (noProperties) {
+    return <div className={styles.noProperties}>No properties found</div>;
+  }
+
+  return (
+    <div className={styles.list}>
+      {properties.map((property) => {
+        return (
+          <PropertyCard
+            key={property.id}
+            property={property}
+            actions={
+              <div className={styles.actions}>
+                <div className={styles.action}>
+                  <ButtonBase
+                    onClick={() => {
+                      router.push(`/properties/${property.id}`);
+                    }}
+                  >
+                    <FontAwesomeIcon
+                      className={styles.ellipsis}
+                      icon={faArrowRight}
+                    />
+                  </ButtonBase>
+                </div>
+              </div>
+            }
+          />
+        );
+      })}
+    </div>
+  );
+};
 
 export default Index;

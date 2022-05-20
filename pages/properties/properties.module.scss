@@ -1,7 +1,6 @@
 @import url("https://fonts.googleapis.com/css2?family=Ubuntu&display=swap");
 
 .container {
-  min-height: 100vh;
   padding: 0 0.5rem;
   display: flex;
   flex-direction: column;
@@ -29,6 +28,15 @@
 
 .list {
   width: 100%;
+  display: grid;
+  text-align: center;
+  .isError {
+    margin-top: 20px;
+  }
+
+  .noProperties {
+    margin-top: 20px;
+  }
 }
 
 .space {
