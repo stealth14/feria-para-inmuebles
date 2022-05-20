@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Property, { useProperties } from "@/lib/property";
 import { Col, Row, Grid } from "antd";
 
@@ -11,14 +11,21 @@ import "@/components/globals/Button";
 import Button from "@/components/globals/Button";
 import { useRouter } from "next/router";
 
+import { useLoader } from "@/hocs/withLoader";
+
 function Index() {
   const { properties, isLoading, isError } = useProperties();
   const { useBreakpoint } = Grid;
   const screens = useBreakpoint();
 
+  const { onLoading } = useLoader();
+
+  useEffect(() => {
+    onLoading(isLoading);
+  }, [isLoading, onLoading]);
+
   return (
     <div className={styles.container}>
-      {isLoading && <div>Loading...</div>}
       <div className={styles.header}>
         <h1>Mis publicaciones</h1>
       </div>
@@ -40,7 +47,6 @@ function Index() {
           properties,
           isLoading,
           isError,
-          noProperties: properties.length === 0,
         }}
       />
     </div>
@@ -50,19 +56,22 @@ function Index() {
 interface PropertiesList {
   isError: boolean;
   isLoading: boolean;
-  noProperties: boolean;
   properties: Property[];
 }
 
 const PropertiesList = (props: PropertiesList) => {
-  const { properties, isError, isLoading, noProperties } = props;
+  const { properties, isError, isLoading } = props;
   const router = useRouter();
+
+  if (isLoading) {
+    return <></>;
+  }
 
   if (isError) {
     return <div className={styles.isError}>Error</div>;
   }
 
-  if (noProperties) {
+  if (properties?.length === 0) {
     return <div className={styles.noProperties}>No properties found</div>;
   }
 

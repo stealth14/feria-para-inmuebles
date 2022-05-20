@@ -1,6 +1,7 @@
 import "../styles/globals.css";
 import GeneralNav from "@/components/GeneralNav";
 import { AuthProvider } from "@/lib/auth";
+import withLoader from "@/hocs/withLoader";
 
 function MyApp({ Component, pageProps }) {
   return (
@@ -11,4 +12,4 @@ function MyApp({ Component, pageProps }) {
   );
 }
 
-export default MyApp;
+export default withLoader(MyApp);
