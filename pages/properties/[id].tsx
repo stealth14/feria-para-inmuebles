@@ -39,7 +39,7 @@ const Action = (props: ActionProps) => {
 export async function getStaticPaths() {
   const [properties] = await getAll();
 
-  const paths = properties.map((property) => ({
+  const paths = properties.map((property : Property) => ({
     params: { id: property.id },
   }));
 
