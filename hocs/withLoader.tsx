@@ -21,7 +21,7 @@ export default function withLoader<P>(
     };
 
     return (
-      <Spin spinning={true}>
+      <Spin spinning={loading}>
         <LoaderContext.Provider value={{ loading, onLoading }}>
           <WrappedComponent {...props} />
         </LoaderContext.Provider>
