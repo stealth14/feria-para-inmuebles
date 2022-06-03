@@ -18,11 +18,11 @@ function Index() {
   const { useBreakpoint } = Grid;
   const screens = useBreakpoint();
 
-  const { onLoading } = useLoader();
+  const { handleLoading } = useLoader();
 
   useEffect(() => {
-    onLoading(isLoading);
-  }, [isLoading, onLoading]);
+    handleLoading(isLoading);
+  }, [isLoading, handleLoading]);
 
   return (
     <div className={styles.container}>

@@ -3,7 +3,7 @@ import { Spin } from "antd";
 
 const LoaderContext = React.createContext({
   loading: false,
-  onLoading: (_: boolean): void => {},
+  handleLoading: (_: boolean): void => {},
 });
 
 export const useLoader = () => {
@@ -16,13 +16,13 @@ export default function withLoader<P>(
   const ComponentWithLoader = (props: P) => {
     const [loading, setLoading] = useState<boolean>(false);
 
-    const onLoading = (isLoading: boolean) => {
+    const handleLoading = (isLoading: boolean) => {
       setLoading(isLoading);
     };
 
     return (
       <Spin spinning={loading}>
-        <LoaderContext.Provider value={{ loading, onLoading }}>
+        <LoaderContext.Provider value={{ loading, handleLoading }}>
           <WrappedComponent {...props} />
         </LoaderContext.Provider>
       </Spin>
