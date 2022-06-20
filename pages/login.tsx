@@ -16,15 +16,13 @@ export default function Login() {
   }, []);
 
   const onFinish = async (submittedUser: User) => {
-    console.log("excecuted");
-
     const [loggedUser, error] = await login(submittedUser);
     if (loggedUser) {
       router.push("/properties");
     }
 
-    if (error?.response) {
-      alert(lang("invalid_credentials"));
+    if (error) {
+      alert(lang("generic_error"));
     }
   };
 
