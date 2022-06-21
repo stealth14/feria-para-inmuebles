@@ -5,7 +5,11 @@ import Features from "@/components/properties/Features";
 import { Carousel } from "antd";
 import AnchorBase from "@/components/globals/AnchorBase";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPen, faTrash, IconDefinition } from "@fortawesome/free-solid-svg-icons";
+import {
+  faPen,
+  faTrash,
+  IconDefinition,
+} from "@fortawesome/free-solid-svg-icons";
 import { useRouter } from "next/router";
 
 interface ActionProps {
@@ -37,9 +41,11 @@ const Action = (props: ActionProps) => {
 };
 
 export async function getStaticPaths() {
-  const [properties] = await getAll();
+  const [properties, error] = await getAll();
 
-  const paths = properties.map((property : Property) => ({
+  if (error) return { paths: [], fallback: false };
+
+  const paths = properties.map((property: Property) => ({
     params: { id: property.id },
   }));
 
