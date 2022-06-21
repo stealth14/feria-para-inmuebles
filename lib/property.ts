@@ -19,7 +19,7 @@ export default interface Property {
 
 export const save = async (property: Property) => {
   try {
-    const response = await axios.post("/api/properties", property);
+    const response = await axios.post("/properties", property);
     const savedProperty: Property = response.data;
     return [savedProperty, null];
   } catch (error: any) {
