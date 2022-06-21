@@ -1,6 +1,5 @@
 import useSWR from "swr";
-import axios from "axios";
-
+import { api } from "./api";
 export default interface Property {
   id: string;
   title: string;
@@ -19,7 +18,7 @@ export default interface Property {
 
 export const save = async (property: Property) => {
   try {
-    const response = await axios.post("/properties", property);
+    const response = await api.post("/properties", property);
     const savedProperty: Property = response.data;
     return [savedProperty, null];
   } catch (error: any) {
@@ -31,7 +30,7 @@ export const get = async (id: string) => {
   const path = `/properties/${id}`;
 
   try {
-    const response = await axios.get(
+    const response = await api.get(
       process.env.NEXT_PUBLIC_API_BASE_URL + String(path)
     );
 
@@ -45,7 +44,7 @@ export const get = async (id: string) => {
 
 export const getAll = async () => {
   try {
-    const response = await axios.get(
+    const response = await api.get(
       process.env.NEXT_PUBLIC_API_BASE_URL + "/properties"
     );
 
@@ -58,7 +57,7 @@ export const getAll = async () => {
 };
 
 export function useProperties() {
-  const fetcher = (url: string) => axios.get(url).then((res) => res.data);
+  const fetcher = (url: string) => api.get(url).then((res) => res.data);
 
   const { data, error } = useSWR(
     process.env.NEXT_PUBLIC_API_BASE_URL + "properties",
@@ -73,7 +72,7 @@ export function useProperties() {
 }
 
 export function useProperty(id: string) {
-  const fetcher = (url: string) => axios.get(url).then((res) => res.data);
+  const fetcher = (url: string) => api.get(url).then((res) => res.data);
 
   const { data, error } = useSWR(
     `${process.env.NEXT_PUBLIC_API_BASE_URL}properties/${id}`,

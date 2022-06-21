@@ -5,7 +5,7 @@ axios.defaults.withCredentials = true;
 
 export const api = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_BASE_URL,
-  withCredentials: false,
+  withCredentials: true,
 });
 
 api.interceptors.request.use(
@@ -25,5 +25,5 @@ api.interceptors.request.use(
 
 export const publicApi = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_BASE_URL,
-  withCredentials: false,
+  withCredentials: true,
 });
