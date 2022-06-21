@@ -102,12 +102,12 @@ export default function Page(props: { property: Property }) {
 
 const PropertyCarousel = (props: { property: Property }) => {
   const { property } = props;
-  const { photo } = property;
+  const { photos } = property;
 
   return (
     <Carousel className={styles.PropertyCarousel}>
       <div className={styles.wrapper}>
-        <img src={photo} className={styles.photo} />
+        <img src={photos[0]} className={styles.photos} />
       </div>
     </Carousel>
   );

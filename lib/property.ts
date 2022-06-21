@@ -8,7 +8,7 @@ export default interface Property {
   bedrooms: number;
   kitchens: number;
   parkings: number;
-  photo: string;
+  photos: string[];
   price: number;
   type: string;
   address: string;

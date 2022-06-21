@@ -9,7 +9,7 @@ export default interface User {
   email?: string;
   password?: string;
   password_confirmation?: string;
-  photo?: string;
+  photos?: string;
   phone?: string;
   avatar: any;
 }

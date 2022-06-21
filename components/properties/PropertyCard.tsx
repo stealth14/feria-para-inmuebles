@@ -20,7 +20,7 @@ interface PropertyCardProps {
 
 export default function PropertyCard(props: PropertyCardProps) {
   const { property, actions } = props;
-  const { phone, photo } = property;
+  const { phone, photos } = property;
 
   const screens = useBreakpoint();
 
@@ -48,9 +48,9 @@ export default function PropertyCard(props: PropertyCardProps) {
         justify={screens.xs ? "center" : "space-around"}
       >
         {!screens.xs && (
-          <Col className={styles.photo} span={8}>
+          <Col className={styles.photos} span={8}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={photo} alt="foto de propiedad" />
+            <img src={photos[0]} alt="foto de propiedad" />
           </Col>
         )}
         <Col
@@ -64,9 +64,9 @@ export default function PropertyCard(props: PropertyCardProps) {
         >
           <Info property={property} />
           {screens.xs && (
-            <Col className={styles.photo} sm={24}>
+            <Col className={styles.photos} sm={24}>
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={photo} alt="foto de propiedad" />
+              <img src={photos[0]} alt="foto de propiedad" />
             </Col>
           )}
           <Features property={property} />
