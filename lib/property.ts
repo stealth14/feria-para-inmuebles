@@ -27,7 +27,7 @@ export const save = async (property: Property) => {
 };
 
 export const get = async (id: string) => {
-  const path = `/properties/${id}`;
+  const path = `properties/${id}`;
 
   try {
     const response = await api.get(
@@ -45,7 +45,7 @@ export const get = async (id: string) => {
 export const getAll = async () => {
   try {
     const response = await api.get(
-      process.env.NEXT_PUBLIC_API_BASE_URL + "/properties"
+      "https://api-feria-inmuebles.herokuapp.com/api/properties"
     );
 
     const properties: Property[] = response.data;

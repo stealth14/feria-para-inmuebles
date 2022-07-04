@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Property, { getAll, get } from "@/lib/property";
 import styles from "./property.module.scss";
 import Features from "@/components/properties/Features";
@@ -40,62 +40,65 @@ const Action = (props: ActionProps) => {
   );
 };
 
-export async function getStaticPaths() {
-  const [properties, error] = await getAll();
-
-  if (error) return { paths: [], fallback: false };
-
-  const paths = properties.map((property: Property) => ({
-    params: { id: property.id },
-  }));
-
-  return { paths, fallback: false };
-}
-
-export async function getStaticProps({ params }) {
-  const [property] = await get(params.id);
-
-  return { props: { property } };
-}
-
-export default function Page(props: { property: Property }) {
-  const { property } = props;
+export default function Page() {
+  const [property, setProperty] = useState<Property | null>(null);
   const router = useRouter();
+  const { id } = router.query;
+
+  useEffect(() => {
+    (async () => {
+      if (typeof id === "string") {
+        const [property, error] = await get(id);
+
+        if (error) return;
+
+        setProperty(property);
+      }
+    })();
+  }, [id]);
+
+  if (!property) {
+    return <>property not loaded</>;
+  }
 
   return (
     <div className={styles.container}>
-      <div style={{ display: "flex" }}>
-        <div className={styles.info}>
-          <div className={styles.head}>
-            <h2> USD {property.price}</h2>
+      {property && (
+        <>
+          <div style={{ display: "flex" }}>
+            <div className={styles.info}>
+              <div className={styles.head}>
+                <h2> USD {property.price}</h2>
+              </div>
+              <h3>
+                {property?.type} - {property.address}
+              </h3>
+            </div>
           </div>
-          <h3>
-            {property?.type} - {property.address}
-          </h3>
-        </div>
-      </div>
-      <div className={styles.actions}>
-        <Action
-          label="Editar"
-          faIcon={faPen}
-          onClick={() => {
-            router.push({
-              pathname: "/properties/add",
-              query: { id: property.id },
-            });
-          }}
-        />
-        <Action
-          label="Eliminar"
-          faIcon={faTrash}
-          onClick={() => {
-            alert("Eliminando");
-          }}
-        />
-      </div>
-      <PropertyCarousel property={property} />
-      <Features property={property} />
-      <p>{property.description}</p>
+          <div className={styles.actions}>
+            <Action
+              label="Editar"
+              faIcon={faPen}
+              onClick={() => {
+                router.push({
+                  pathname: "/properties/add",
+                  query: { id: property.id },
+                });
+              }}
+            />
+            <Action
+              label="Eliminar"
+              faIcon={faTrash}
+              onClick={() => {
+                alert("Eliminando");
+              }}
+            />
+          </div>
+          <PropertyCarousel property={property} />
+          <Features property={property} />
+          <p>{property.description}</p>
+        </>
+      )}
     </div>
   );
 }

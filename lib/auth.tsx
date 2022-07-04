@@ -35,11 +35,6 @@ function useAuthProvider() {
     console.log("provider reset");
     if (!user) {
       const userCookie = Cookies.get("user");
-      if (userCookie) {
-        const userObject = JSON.parse(userCookie.toString());
-        console.log("user recovered from cookie", userObject);
-        setUser(userObject);
-      }
     }
   }, []);
 
@@ -47,7 +42,7 @@ function useAuthProvider() {
     if (user) {
       setUser(user);
       Cookies.set("token", user.token, {
-        expires: 0.001, // days
+        expires: 0.01, // days
       });
       Cookies.set("user", user, {
         expires: 0.01, // days
@@ -57,7 +52,7 @@ function useAuthProvider() {
     } else {
       // no tengo sesión activa
       setUser(false);
-      Cookies.remove("token");
+      // Cookies.remove("token");
       return false;
     }
   };
@@ -70,26 +65,6 @@ function useAuthProvider() {
       return [loggedUser, null];
     } catch (error) {
       return [null, error];
-    }
-  }
-
-  async function checkCredentials(credentials) {
-    try {
-      const response = await publicApi.post("/check", credentials);
-      return { status: "success" };
-    } catch (error) {
-      if (error.response) {
-        return {
-          status: "error",
-          message: lang(error.response.data.message),
-        };
-      } else if (error.request) {
-        console.log("error.request", error.request);
-        return { status: "error", message: null };
-      } else {
-        console.log("error.config", error.config);
-        return { status: "error", message: null };
-      }
     }
   }
 
@@ -208,6 +183,5 @@ function useAuthProvider() {
     confirmPasswordReset,
     getAuthenticatedUser,
     handleUser,
-    checkCredentials,
   };
 }
