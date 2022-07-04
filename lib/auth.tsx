@@ -42,7 +42,7 @@ function useAuthProvider() {
     if (user) {
       setUser(user);
       Cookies.set("token", user.token, {
-        expires: 0.01, // days
+        expires: 0.1, // days
       });
       Cookies.set("user", user, {
         expires: 0.01, // days

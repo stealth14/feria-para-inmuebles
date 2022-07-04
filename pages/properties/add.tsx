@@ -1,29 +1,32 @@
 import React, { useState } from "react";
 import { Form, Input, Button, Col, Row } from "antd";
-import Property, { useProperty, save } from "@/lib/property";
+import Property from "@/lib/property";
 import { useRouter } from "next/router";
 import FeatureSelect from "@/components/properties/FeatureSelect";
 import PhotosPicker from "@/components/globals/PhotosPicker";
 import lang from "@/constants/lang";
-
 import styles from "./add.module.scss";
-
-export async function getServerSideProps({ query }) {
-  const { id } = query;
-  return { props: { id } };
-}
+import { parseQuery } from "@/lib/utils";
 
 export default function Add() {
   const router = useRouter();
-  const { query } = router;
-  const { id } = query;
-  const { property, isLoading, isError } = useProperty(id as string);
+  const { query, isReady } = router;
 
   const [form] = Form.useForm();
+
+  React.useEffect(() => {
+    if (isReady) {
+      // initialize uncontrolled fields
+      const property = parseQuery(query) as Property;
+      form.setFieldsValue(property);
+      // initialize controlled field
+    }
+  }, [form, isReady, query]);
 
   const [fileList, setFileList] = useState([]);
 
   const onFinish = (submittedProperty: Property) => {
+    console.log("submittedProperty:", submittedProperty);
     // photos validation
     if (fileList.length < 1) {
       alert(lang("photo_required"));
@@ -48,11 +51,7 @@ export default function Add() {
             <Form.Item
               label="Título"
               name="title"
-              rules={[
-                { required: true, message: "Título obligatorio" },
-                { min: 30, message: "Título muy corto" },
-                { max: 50, message: "Título muy largo" },
-              ]}
+              rules={[{ required: true, message: "Título obligatorio" }]}
             >
               <Input />
             </Form.Item>
@@ -63,7 +62,7 @@ export default function Add() {
             <FeatureSelect name={"bathrooms"} label="Baños" />
           </Col>
           <Col span={24}>
-            <FeatureSelect name={"dormitories"} label="Dormitorios" />
+            <FeatureSelect name={"bedrooms"} label="Dormitorios" />
           </Col>
           <Col span={24}>
             <FeatureSelect name={"kitchens"} label="Cocinas" />
