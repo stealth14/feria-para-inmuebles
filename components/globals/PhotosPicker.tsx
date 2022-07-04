@@ -44,6 +44,7 @@ export default function PhotosPicker(props: PhotosPickerProps) {
     <div>
       <Upload
         accept="image/*"
+        multiple
         maxCount={maxCount ?? 3}
         listType="picture-card"
         fileList={fileList}
