@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Form, Input, Button, Col, Row } from "antd";
 import Property from "@/lib/property";
 import { useRouter } from "next/router";
@@ -7,33 +7,64 @@ import PhotosPicker from "@/components/globals/PhotosPicker";
 import lang from "@/constants/lang";
 import styles from "./add.module.scss";
 import { parseQuery } from "@/lib/utils";
+import type { UploadFile } from "antd/es/upload/interface";
+
+enum AddMode {
+  CREATE,
+  EDIT,
+  UNKNOW,
+}
+
+const urlToObject = async (url: string) => {
+  const response = await fetch(url);
+  // here image is url/location of image
+  const blob = await response.blob();
+  const file = new File([blob], url, { type: blob.type });
+  return file;
+};
 
 export default function Add() {
   const router = useRouter();
   const { query, isReady } = router;
+  const [mode, setMode] = useState<AddMode | null>(AddMode.UNKNOW);
+  const [fileList, setFileList] = useState([]);
 
   const [form] = Form.useForm();
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (isReady) {
+      if (query === {}) {
+        setMode(AddMode.CREATE);
+        setFileList([]);
+        return;
+      }
+      setMode(AddMode.EDIT);
       // initialize uncontrolled fields
       const property = parseQuery(query) as Property;
       form.setFieldsValue(property);
-      // initialize controlled field
+      // initialize controlled fields
+      setMode(AddMode.EDIT);
+      const fileList = property.photos.map((photo: string, index) => {
+        return {
+          uid: `${index}`,
+          name: `image${1}.png`,
+          status: "done",
+          url: photo,
+        } as UploadFile;
+      });
+
+      setFileList(fileList);
     }
   }, [form, isReady, query]);
 
-  const [fileList, setFileList] = useState([]);
-
-  const onFinish = (submittedProperty: Property) => {
-    console.log("submittedProperty:", submittedProperty);
+  const onFinish = (newProperty: Property) => {
+    console.log("newProperty:", newProperty);
     // photos validation
     if (fileList.length < 1) {
       alert(lang("photo_required"));
       return;
     }
 
-    console.log("submittedProperty", submittedProperty);
   };
 
   const handleChange = ({ fileList }) => {
@@ -80,7 +111,12 @@ export default function Add() {
           fileList={fileList}
         />
         <Row justify="center">
-          <Button className={styles["submit-button"]} htmlType="submit">
+          <Button
+            loading={mode === AddMode.UNKNOW}
+            disabled={mode === AddMode.UNKNOW}
+            className={styles["submit-button"]}
+            htmlType="submit"
+          >
             Publicar
           </Button>
         </Row>
