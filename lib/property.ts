@@ -16,9 +16,20 @@ export default interface Property {
   phone: string;
 }
 
-export const save = async (property: Property) => {
+export const create = async (property: Property) => {
   try {
     const response = await api.post("/properties", property);
+    const savedProperty: Property = response.data;
+    return [savedProperty, null];
+  } catch (error: any) {
+    return [null, error];
+  }
+};
+
+export const update = async (property: Property) => {
+
+  try {
+    const response = await api.put(`/properties/${property.id}`, property);
     const savedProperty: Property = response.data;
     return [savedProperty, null];
   } catch (error: any) {

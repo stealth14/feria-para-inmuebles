@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Form, Input, Button, Col, Row } from "antd";
-import Property from "@/lib/property";
+import Property, { update, create } from "@/lib/property";
 import { useRouter } from "next/router";
 import FeatureSelect from "@/components/properties/FeatureSelect";
 import PhotosPicker from "@/components/globals/PhotosPicker";
@@ -14,14 +14,6 @@ enum AddMode {
   EDIT,
   UNKNOW,
 }
-
-const urlToObject = async (url: string) => {
-  const response = await fetch(url);
-  // here image is url/location of image
-  const blob = await response.blob();
-  const file = new File([blob], url, { type: blob.type });
-  return file;
-};
 
 export default function Add() {
   const router = useRouter();
@@ -57,14 +49,16 @@ export default function Add() {
     }
   }, [form, isReady, query]);
 
-  const onFinish = (newProperty: Property) => {
+  const onFinish = async (newProperty: Property) => {
     console.log("newProperty:", newProperty);
     // photos validation
     if (fileList.length < 1) {
       alert(lang("photo_required"));
       return;
     }
+    if (mode === AddMode.EDIT) await update(newProperty);
 
+    if (mode === AddMode.CREATE) await create(newProperty);
   };
 
   const handleChange = ({ fileList }) => {
