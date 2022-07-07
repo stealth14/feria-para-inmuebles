@@ -110,7 +110,7 @@ const PropertyCarousel = (props: { property: Property }) => {
   return (
     <Carousel className={styles.PropertyCarousel}>
       <div className={styles.wrapper}>
-        <img src={photos[0]} className={styles.photos} />
+        <img src={photos[0] as string} className={styles.photos} />
       </div>
     </Carousel>
   );
