@@ -82,7 +82,7 @@ export default function Page() {
               onClick={() => {
                 router.push({
                   pathname: "/properties/add",
-                  query: { ...property },
+                  query: { ...property } as any,
                 });
               }}
             />
