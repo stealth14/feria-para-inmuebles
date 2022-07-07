@@ -14,8 +14,6 @@ export default function FeatureSelect(props: { label: string; name: string }) {
   return (
     <div className={styles.container}>
       <Form.Item
-        labelCol={{ span: 4 }}
-        labelAlign="left"
         label={label}
         name={name}
         rules={[

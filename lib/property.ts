@@ -1,33 +1,47 @@
 import useSWR from "swr";
 import { api } from "./api";
+import type { RcFile, UploadFile } from "antd/es/upload/interface";
+
 export default interface Property {
   id: string;
   title: string;
-  area: number;
-  bathrooms: number;
-  bedrooms: number;
-  kitchens: number;
-  parkings: number;
-  photos: string[];
+  description: string;
+  address: string;
   price: number;
   type: string;
-  address: string;
-  description: string;
+  bathrooms: number;
+  area: number;
+  bedrooms: number;
+  livingrooms: number;
+  dormitories: number;
+  kitchens: number;
+  parkings: number;
+  photos: string[] | UploadFile[];
   phone: string;
 }
 
 export const create = async (property: Property) => {
   try {
-    const response = await api.post("/properties", property);
-    const savedProperty: Property = response.data;
-    return [savedProperty, null];
+    property.photos = property.photos.map((file: string | UploadFile) => {
+      return file as RcFile;
+    });
+
+    const config = {
+      headers: {
+        "Content-type": "multipart/form-data",
+      },
+    };
+
+    const response = await api.post("/properties", property, config);
+    const createdProperty: Property = response.data;
+
+    return [createdProperty, null];
   } catch (error: any) {
     return [null, error];
   }
 };
 
 export const update = async (property: Property) => {
-
   try {
     const response = await api.put(`/properties/${property.id}`, property);
     const savedProperty: Property = response.data;

@@ -23,7 +23,7 @@ function Index() {
   useEffect(() => {
     handleLoading(isLoading);
   }, [isLoading, handleLoading]);
-
+  const router = useRouter();
   return (
     <div className={styles.container}>
       <div className={styles.header}>
@@ -32,7 +32,15 @@ function Index() {
       <div className={styles.content}>
         <Row justify={screens.xs ? "center" : "end"}>
           <Col xs={20} sm={3} md={3} lg={3} xl={3} xxl={3}>
-            <Button>PUBLICAR</Button>
+            <Button
+              onClick={() => {
+                router.push({
+                  pathname: "/properties/add",
+                });
+              }}
+            >
+              PUBLICAR
+            </Button>
           </Col>
         </Row>
       </div>
