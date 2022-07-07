@@ -50,7 +50,7 @@ export default function PropertyCard(props: PropertyCardProps) {
         {!screens.xs && (
           <Col className={styles.photos} span={8}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={photos[0]} alt="foto de propiedad" />
+            <img src={photos[0] as string} alt="foto de propiedad" />
           </Col>
         )}
         <Col
@@ -66,7 +66,7 @@ export default function PropertyCard(props: PropertyCardProps) {
           {screens.xs && (
             <Col className={styles.photos} sm={24}>
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={photos[0]} alt="foto de propiedad" />
+              <img src={photos[0] as string} alt="foto de propiedad" />
             </Col>
           )}
           <Features property={property} />
