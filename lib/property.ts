@@ -22,17 +22,24 @@ export default interface Property {
 
 export const create = async (property: Property) => {
   try {
-    property.photos = property.photos.map((file: string | UploadFile) => {
-      return file as RcFile;
-    });
-
     const config = {
       headers: {
-        "Content-type": "multipart/form-data",
+        "content-type": "multipart/form-data",
       },
     };
 
-    const response = await api.post("/properties", property, config);
+    const formData = new FormData();
+
+    for (const field in property) {
+      if (field === "photos") continue;
+      formData.append(field, property[field]);
+    }
+
+    for (const photo of property.photos) {
+      formData.append("photos[]", (photo as UploadFile).originFileObj);
+    }
+
+    const response = await api.post("/properties", formData, config);
     const createdProperty: Property = response.data;
 
     return [createdProperty, null];

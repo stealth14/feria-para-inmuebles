@@ -62,7 +62,6 @@ export default function Add() {
     }
 
     if (!property) {
-      console.log("creating");
       await create({ ...newProperty, photos: fileList } as Property);
     }
 
