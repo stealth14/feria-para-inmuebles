@@ -66,8 +66,11 @@ export default function Add() {
     }
 
     if (property) {
-      // console.log("updating");
-      // await update(newProperty);
+      await update({
+        ...newProperty,
+        ...property,
+        photos: fileList,
+      } as Property);
     }
   };
 

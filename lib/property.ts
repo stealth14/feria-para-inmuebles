@@ -20,26 +20,33 @@ export default interface Property {
   phone: string;
 }
 
+const formatProperty = (property: Property) => {
+  const formData = new FormData();
+
+  for (const field in property) {
+    if (field === "photos") continue;
+    formData.append(field, property[field]);
+  }
+
+  for (const photo of property.photos) {
+    formData.append("photos[]", (photo as UploadFile).originFileObj);
+  }
+
+  return formData;
+};
+
 export const create = async (property: Property) => {
   try {
+    const url = "/properties";
+    const formData = formatProperty(property);
     const config = {
       headers: {
         "content-type": "multipart/form-data",
       },
     };
 
-    const formData = new FormData();
+    const response = await api.post(url, formData, config);
 
-    for (const field in property) {
-      if (field === "photos") continue;
-      formData.append(field, property[field]);
-    }
-
-    for (const photo of property.photos) {
-      formData.append("photos[]", (photo as UploadFile).originFileObj);
-    }
-
-    const response = await api.post("/properties", formData, config);
     const createdProperty: Property = response.data;
 
     return [createdProperty, null];
@@ -50,7 +57,16 @@ export const create = async (property: Property) => {
 
 export const update = async (property: Property) => {
   try {
-    const response = await api.put(`/properties/${property.id}`, property);
+    const url = `/properties/${property.id}`;
+    const formData = formatProperty(property);
+    const config = {
+      headers: {
+        "content-type": "multipart/form-data",
+      },
+    };
+
+    const response = await api.put(url, formData, config);
+
     const savedProperty: Property = response.data;
     return [savedProperty, null];
   } catch (error: any) {
