@@ -80,7 +80,7 @@ export default function Home() {
       <Row justify="center">
         <Col style={custom} xs={24} sm={12} md={8} lg={8} xl={8} xxl={8}>
           <Card
-            title="Buscador de inmuebles"
+            title="Buscador"
             icon={<FontAwesomeIcon icon={faSearch} />}
             description="Encuentra anuncios de propiedades que se ajusten a tus exigencias y presupuesto"
           />
