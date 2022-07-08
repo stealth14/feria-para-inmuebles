@@ -11,6 +11,7 @@ import {
   IconDefinition,
 } from "@fortawesome/free-solid-svg-icons";
 import { useRouter } from "next/router";
+import { useLoader } from "@/hocs/withLoader";
 
 interface ActionProps {
   label: string;
@@ -44,6 +45,11 @@ export default function Page() {
   const [property, setProperty] = useState<Property | null>(null);
   const router = useRouter();
   const { id } = router.query;
+  const { handleLoading } = useLoader();
+
+  useEffect(() => {
+    handleLoading(!Boolean(property));
+  }, [property]);
 
   useEffect(() => {
     (async () => {
@@ -58,7 +64,7 @@ export default function Page() {
   }, [id]);
 
   if (!property) {
-    return <>property not loaded</>;
+    return <></>;
   }
 
   return (
