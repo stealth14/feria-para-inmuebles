@@ -59,13 +59,14 @@ export const update = async (property: Property) => {
   try {
     const url = `/properties/${property.id}`;
     const formData = formatProperty(property);
+    formData.append("_method", "PUT");
     const config = {
       headers: {
         "content-type": "multipart/form-data",
       },
     };
 
-    const response = await api.put(url, formData, config);
+    const response = await api.post(url, formData, config);
 
     const savedProperty: Property = response.data;
     return [savedProperty, null];
