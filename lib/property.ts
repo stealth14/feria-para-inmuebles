@@ -59,7 +59,6 @@ export const update = async (property: Property) => {
   try {
     const url = `/properties/${property.id}`;
     const formData = formatProperty(property);
-    formData.append("_method", "PUT");
     const config = {
       headers: {
         "content-type": "multipart/form-data",
