@@ -57,7 +57,7 @@ export const create = async (property: Property) => {
 
 export const update = async (property: Property) => {
   try {
-    const url = `/properties/${property.id}`;
+    const url = "/user/properties";
     const formData = formatProperty(property);
     const config = {
       headers: {
