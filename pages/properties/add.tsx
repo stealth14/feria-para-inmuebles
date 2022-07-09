@@ -7,7 +7,7 @@ import PhotosPicker from "@/components/globals/PhotosPicker";
 import lang from "@/constants/lang";
 import styles from "./add.module.scss";
 import { parseQuery } from "@/lib/utils";
-import type { UploadChangeParam, UploadFile } from "antd/es/upload/interface";
+import type { UploadFile } from "antd/es/upload/interface";
 import { useLoader } from "@/hocs/withLoader";
 
 const { Option } = Select;
@@ -23,10 +23,6 @@ export default function Add() {
   const [fileList, setFileList] = useState<UploadFile[]>([]);
 
   const [form] = Form.useForm();
-
-  useEffect(() => {
-    console.log("rendered");
-  }, []);
 
   /** Initialize uncontrolled fields*/
   useEffect(() => {
@@ -144,7 +140,7 @@ export default function Add() {
                   name="type"
                   rules={[{ required: true, message: "Obligatorio" }]}
                 >
-                  <Select defaultValue="Casa" style={{ width: 120 }}>
+                  <Select style={{ width: 120 }}>
                     <Option value="Terreno">Terreno</Option>
                     <Option value="Casa">Casa</Option>
                     <Option value="Departamento">Departamento</Option>
@@ -181,8 +177,15 @@ export default function Add() {
               fileList={fileList}
             />
             <Row justify="center">
-              <Button className={styles["submit-button"]} htmlType="submit">
-                Publicar
+              <Button
+                loading={property === undefined}
+                disabled={property === undefined}
+                className={styles["submit-button"]}
+                htmlType="submit"
+              >
+                {property === undefined && "Cargando"}
+                {property === null && "Publicar"}
+                {property && "Guardar cambios"}
               </Button>
             </Row>
           </Form>
