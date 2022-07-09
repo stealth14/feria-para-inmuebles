@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import { Upload, Modal } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import styles from "./PhotosPicker.module.scss";
-import type { UploadChangeParam, UploadFile } from "antd/es/upload/interface";
+import type { UploadProps, UploadFile } from "antd/es/upload/interface";
+import { RcFile } from "antd/lib/upload";
 
 function getBase64(file: Blob) {
   return new Promise((resolve, reject) => {
@@ -14,13 +15,14 @@ function getBase64(file: Blob) {
 }
 
 interface PhotosPickerProps {
-  fileList: Array<any>;
-  handleChange: (info: UploadChangeParam<UploadFile<any>>) => void;
+  fileList: UploadFile[];
+  handleFileList: (fileList: UploadFile[]) => void;
   maxCount: number;
 }
 
 export default function PhotosPicker(props: PhotosPickerProps) {
-  const { fileList, handleChange, maxCount } = props;
+  const { handleFileList, fileList, maxCount } = props;
+
   const [previewVisible, setPreviewVisible] = useState(false);
   const [previewImage, setPreviewImage] = useState("");
   const [previewTitle, setPreviewTitle] = useState("");
@@ -41,25 +43,35 @@ export default function PhotosPicker(props: PhotosPickerProps) {
     );
   };
 
+  const uploadProps: UploadProps = {
+    onRemove: (file) => {
+      const index = fileList.indexOf(file);
+      const newFileList = fileList.slice();
+      newFileList.splice(index, 1);
+      handleFileList(newFileList);
+    },
+    beforeUpload: (file: RcFile) => {
+      const newFile = {
+        uid: file.uid,
+        name: file.name,
+        originFileObj: file,
+      } as UploadFile;
+
+      handleFileList([...fileList, newFile]);
+
+      return false;
+    },
+    fileList,
+  };
+
   return (
     <div>
       <Upload
+        {...uploadProps}
         accept="image/*"
-        multiple
         maxCount={maxCount ?? 3}
         listType="picture-card"
-        fileList={fileList}
         onPreview={handlePreview}
-        onChange={handleChange}
-        beforeUpload={(file: File) => {
-          const maxSize = 1048576; // 1MB
-          if (file.size > maxSize) {
-            alert("La imagen es muy grande");
-            return Upload.LIST_IGNORE;
-          }
-
-          return true;
-        }}
       >
         {fileList?.length < maxCount && (
           <div className={styles.button}>
@@ -69,6 +81,9 @@ export default function PhotosPicker(props: PhotosPickerProps) {
         )}
       </Upload>
       <Modal
+        bodyStyle={{
+          padding: 0,
+        }}
         visible={previewVisible}
         title={previewTitle}
         footer={null}

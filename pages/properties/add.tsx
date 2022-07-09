@@ -8,20 +8,25 @@ import lang from "@/constants/lang";
 import styles from "./add.module.scss";
 import { parseQuery } from "@/lib/utils";
 import type { UploadChangeParam, UploadFile } from "antd/es/upload/interface";
+import { useLoader } from "@/hocs/withLoader";
 
 const { Option } = Select;
 
 export default function Add() {
   const router = useRouter();
+  const { handleLoading } = useLoader();
+
   const { query, isReady } = router;
   const [property, setProperty] = useState<Property | null | undefined>(
     undefined
   );
-  const [fileList, setFileList] = useState<UploadFile[]>(
-    new Array<UploadFile>()
-  );
+  const [fileList, setFileList] = useState<UploadFile[]>([]);
 
   const [form] = Form.useForm();
+
+  useEffect(() => {
+    console.log("rendered");
+  }, []);
 
   /** Initialize uncontrolled fields*/
   useEffect(() => {
@@ -54,16 +59,12 @@ export default function Add() {
   }, [property]);
 
   const onFinish = async (newProperty: Property) => {
-    console.log("newProperty:", newProperty);
-    // photos validation
     if (fileList.length < 1) {
       alert(lang("photo_required"));
       return;
     }
 
-    if (!property) {
-      await create({ ...newProperty, photos: fileList } as Property);
-    }
+    handleLoading(true);
 
     if (property) {
       await update({
@@ -71,12 +72,15 @@ export default function Add() {
         ...newProperty,
         photos: fileList,
       } as Property);
+    } else {
+      await create({ ...newProperty, photos: fileList } as Property);
     }
+
+    handleLoading(false);
   };
 
-  const handleChange = (info: UploadChangeParam<UploadFile<any>>) => {
-    const { fileList } = info;
-    setFileList(fileList);
+  const handleFileList = (fileList: UploadFile[]) => {
+    setFileList([...fileList]);
   };
 
   return (
@@ -173,7 +177,7 @@ export default function Add() {
             </div>
             <PhotosPicker
               maxCount={4}
-              handleChange={handleChange}
+              handleFileList={handleFileList}
               fileList={fileList}
             />
             <Row justify="center">
