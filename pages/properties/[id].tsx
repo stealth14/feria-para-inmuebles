@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import Property, { getAll, get } from "@/lib/property";
+import Property, { drop, get } from "@/lib/property";
 import styles from "./property.module.scss";
 import Features from "@/components/properties/Features";
 import { Carousel } from "antd";
@@ -47,6 +47,14 @@ export default function Page() {
   const { id } = router.query;
   const { handleLoading } = useLoader();
 
+  const handleDelete = async () => {
+    handleLoading(true);
+
+    await drop(property);
+
+    handleLoading(false);
+  };
+
   useEffect(() => {
     handleLoading(!Boolean(property));
   }, [property]);
@@ -92,13 +100,7 @@ export default function Page() {
                 });
               }}
             />
-            <Action
-              label="Eliminar"
-              faIcon={faTrash}
-              onClick={() => {
-                alert("Eliminando");
-              }}
-            />
+            <Action label="Eliminar" faIcon={faTrash} onClick={handleDelete} />
           </div>
           <PropertyCarousel property={property} />
           <Features property={property} />

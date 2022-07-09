@@ -104,6 +104,22 @@ export const getAll = async () => {
   }
 };
 
+export const drop = async (property: Property) => {
+  const path = `properties/${property.id}`;
+
+  try {
+    const response = await api.delete(
+      process.env.NEXT_PUBLIC_API_BASE_URL + String(path)
+    );
+
+    const property: Property = response.data;
+
+    return [property, null];
+  } catch (error: any) {
+    return [null, error];
+  }
+};
+
 export function useProperties() {
   const fetcher = (url: string) => api.get(url).then((res) => res.data);
 
