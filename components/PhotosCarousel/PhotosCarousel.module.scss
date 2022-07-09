@@ -1,0 +1,23 @@
+.container {
+  margin-bottom: 40px;
+}
+
+.tile {
+  display: flex;
+  justify-content: center;
+}
+
+.background {
+  filter: blur(10px);
+  width: 100%;
+  height: 300px;
+  background-size: cover;
+}
+
+.photo {
+  position: absolute;
+  z-index: 1;
+  top: 0px;
+  height: 100%;
+  align-self: center;
+}

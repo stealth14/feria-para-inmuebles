@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import Property, { drop, get } from "@/lib/property";
 import styles from "./property.module.scss";
 import Features from "@/components/properties/Features";
-import { Carousel } from "antd";
 import AnchorBase from "@/components/globals/AnchorBase";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -12,6 +11,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { useRouter } from "next/router";
 import { useLoader } from "@/hocs/withLoader";
+import PhotosCarousel from "@/components/PhotosCarousel/PhotosCarousel";
 
 interface ActionProps {
   label: string;
@@ -102,7 +102,7 @@ export default function Page() {
             />
             <Action label="Eliminar" faIcon={faTrash} onClick={handleDelete} />
           </div>
-          <PropertyCarousel property={property} />
+          <PhotosCarousel photos={property.photos as string[]} />
           <Features property={property} />
           <p>{property.description}</p>
         </>
@@ -110,16 +110,3 @@ export default function Page() {
     </div>
   );
 }
-
-const PropertyCarousel = (props: { property: Property }) => {
-  const { property } = props;
-  const { photos } = property;
-
-  return (
-    <Carousel className={styles.PropertyCarousel}>
-      <div className={styles.wrapper}>
-        <img src={photos[0] as string} className={styles.photos} />
-      </div>
-    </Carousel>
-  );
-};
