@@ -7,7 +7,7 @@ import PhotosPicker from "@/components/globals/PhotosPicker";
 import lang from "@/constants/lang";
 import styles from "./add.module.scss";
 import { parseQuery } from "@/lib/utils";
-import type { UploadFile } from "antd/es/upload/interface";
+import type { UploadChangeParam, UploadFile } from "antd/es/upload/interface";
 
 const { Option } = Select;
 
@@ -67,14 +67,15 @@ export default function Add() {
 
     if (property) {
       await update({
-        ...newProperty,
         ...property,
+        ...newProperty,
         photos: fileList,
       } as Property);
     }
   };
 
-  const handleChange = ({ fileList }) => {
+  const handleChange = (info: UploadChangeParam<UploadFile<any>>) => {
+    const { fileList } = info;
     setFileList(fileList);
   };
 

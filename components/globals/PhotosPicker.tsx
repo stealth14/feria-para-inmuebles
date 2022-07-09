@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Upload, Modal } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import styles from "./PhotosPicker.module.scss";
+import type { UploadChangeParam, UploadFile } from "antd/es/upload/interface";
 
 function getBase64(file: Blob) {
   return new Promise((resolve, reject) => {
@@ -14,7 +15,7 @@ function getBase64(file: Blob) {
 
 interface PhotosPickerProps {
   fileList: Array<any>;
-  handleChange: (fileList: any) => void;
+  handleChange: (info: UploadChangeParam<UploadFile<any>>) => void;
   maxCount: number;
 }
 

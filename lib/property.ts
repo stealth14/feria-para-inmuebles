@@ -1,6 +1,6 @@
 import useSWR from "swr";
 import { api } from "./api";
-import type { RcFile, UploadFile } from "antd/es/upload/interface";
+import type { UploadFile } from "antd/es/upload/interface";
 
 export default interface Property {
   id: string;
