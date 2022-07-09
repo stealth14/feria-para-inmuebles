@@ -50,14 +50,17 @@ export default function PhotosPicker(props: PhotosPickerProps) {
       newFileList.splice(index, 1);
       handleFileList(newFileList);
     },
-    beforeUpload: (file: RcFile) => {
-      const newFile = {
-        uid: file.uid,
-        name: file.name,
-        originFileObj: file,
-      } as UploadFile;
+    multiple: true,
+    beforeUpload: (file, selectedFileList) => {
+      const uploadFiles = selectedFileList.map((file) => {
+        return {
+          uid: file.uid,
+          name: file.name,
+          originFileObj: file,
+        } as UploadFile;
+      });
 
-      handleFileList([...fileList, newFile]);
+      handleFileList([...fileList, ...uploadFiles]);
 
       return false;
     },
