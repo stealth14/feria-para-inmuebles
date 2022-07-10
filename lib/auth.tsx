@@ -61,7 +61,7 @@ function useAuthProvider() {
     try {
       const response = await publicApi.post("/login", user);
       
-      handleUser(response.data as User);
+      handleUser(response.data);
       return [user, null];
     } catch (error) {
       return [null, error];
