@@ -3,8 +3,9 @@ import { Upload, Modal } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import styles from "./PhotosPicker.module.scss";
 import type { UploadProps, UploadFile } from "antd/es/upload/interface";
+import { RcFile } from "antd/lib/upload";
 
-function getBase64(file: Blob): Promise<string | ArrayBuffer> {
+function getBase64(file: RcFile): Promise<string | ArrayBuffer> {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
     reader.readAsDataURL(file);
