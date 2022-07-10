@@ -31,7 +31,7 @@ export default function Register() {
 
     handleLoading(false);
 
-    if (savedUser) router.push("/properties");
+    if (savedUser) router.push("/login");
   };
 
   const handleFileList = (fileList: UploadFile[]) => {
