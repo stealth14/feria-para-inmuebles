@@ -172,6 +172,7 @@ export default function Add() {
               <h3>Fotos</h3>
             </div>
             <PhotosPicker
+              multiple={true}
               maxCount={4}
               handleFileList={handleFileList}
               fileList={fileList}

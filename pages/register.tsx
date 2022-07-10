@@ -6,12 +6,15 @@ import PhotosPicker from "@/components/globals/PhotosPicker";
 import { useAuth } from "@/lib/auth";
 import { useRouter } from "next/router";
 import lang from "@/constants/lang";
+import { useLoader } from "@/hocs/withLoader";
+import type { UploadFile } from "antd/es/upload/interface";
 
 export default function Register() {
   const { register } = useAuth();
   const [form] = Form.useForm();
   const [fileList, setFileList] = useState([]);
   const router = useRouter();
+  const { handleLoading } = useLoader();
 
   const onFinish = async (user: User) => {
     // photos validation
@@ -20,10 +23,13 @@ export default function Register() {
       return;
     }
 
+    handleLoading(true);
     const [savedUser, error] = await register({
       ...user,
       avatar: fileList[0].originFileObj,
     });
+
+    handleLoading(true);
 
     if (savedUser) router.push("/properties");
 
@@ -43,14 +49,14 @@ export default function Register() {
     }
   };
 
-  const handleChange = ({ fileList }) => {
-    setFileList(fileList);
+  const handleFileList = (fileList: UploadFile[]) => {
+    setFileList([...fileList]);
   };
 
   return (
     <div className={styles.container}>
       <h2>Registrarse</h2>
-      <Form form={form} onFinish={onFinish}>
+      <Form labelAlign="left" layout="vertical" form={form} onFinish={onFinish}>
         <Row justify="center">
           <Col span={24}>
             <Form.Item
@@ -81,6 +87,37 @@ export default function Register() {
           </Col>
           <Col span={24}>
             <Form.Item
+              label="Número celular"
+              name="cel"
+              rules={[
+                {
+                  required: true,
+                  message: "Celular obligatorio",
+                },
+                {
+                  max: 10,
+                  message: "Maximo 10 caracteres",
+                },
+                {
+                  min: 10,
+                  message: "Mínimo 10 caracteres",
+                },
+                {
+                  validator(_, value) {
+                    // only 0-9
+                    if (/^[0-9]*$/.test(value)) {
+                      return Promise.resolve();
+                    }
+                    return Promise.reject(new Error("Solo números"));
+                  },
+                },
+              ]}
+            >
+              <Input />
+            </Form.Item>
+          </Col>
+          <Col span={24}>
+            <Form.Item
               label="Contraseña"
               name="password"
               rules={[{ required: true, message: "Contraseña obligatoria" }]}
@@ -90,7 +127,7 @@ export default function Register() {
           </Col>
           <Col span={24}>
             <Form.Item
-              label="Contraseña"
+              label="Confirmar contraseña"
               name="password_confirmation"
               rules={[{ required: true, message: "Confirma tu contraseña" }]}
             >
@@ -102,7 +139,7 @@ export default function Register() {
           <Col span={24}>
             <PhotosPicker
               maxCount={1}
-              handleChange={handleChange}
+              handleFileList={handleFileList}
               fileList={fileList}
             />
           </Col>

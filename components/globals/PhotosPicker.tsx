@@ -3,9 +3,8 @@ import { Upload, Modal } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import styles from "./PhotosPicker.module.scss";
 import type { UploadProps, UploadFile } from "antd/es/upload/interface";
-import { RcFile } from "antd/lib/upload";
 
-function getBase64(file: Blob) {
+function getBase64(file: Blob): Promise<string | ArrayBuffer> {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
     reader.readAsDataURL(file);
@@ -14,7 +13,7 @@ function getBase64(file: Blob) {
   });
 }
 
-interface PhotosPickerProps {
+interface PhotosPickerProps extends UploadProps {
   fileList: UploadFile[];
   handleFileList: (fileList: UploadFile[]) => void;
   maxCount: number;
@@ -31,9 +30,9 @@ export default function PhotosPicker(props: PhotosPickerProps) {
     setPreviewVisible(false);
   };
 
-  const handlePreview = async (file) => {
+  const handlePreview = async (file: UploadFile) => {
     if (!file.url && !file.preview) {
-      file.preview = await getBase64(file.originFileObj);
+      file.preview = (await getBase64(file.originFileObj)) as string;
     }
 
     setPreviewImage(file.url || file.preview);
