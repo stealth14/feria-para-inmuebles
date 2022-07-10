@@ -1,17 +1,49 @@
-import React from "react";
-import { Row, Col, Form, Input, Button } from "antd";
+import React, { useState, useEffect } from "react";
+import { Row, Col, Form, Input, Button, Pagination, Divider } from "antd";
+import Property, { search, SearchResult } from "@/lib/property";
 import FeatureSelect from "@/components/properties/FeatureSelect";
 import styles from "./search.module.scss";
+import { useLoader } from "@/hocs/withLoader";
 
-interface Query {
+interface SearchParams {
   [param: string]: string | number;
 }
 
 export default function Index() {
-  const [form] = Form.useForm();
+  const [properties, setProperties] = useState<Property[]>([]);
+  const [page, setPage] = useState<number | null>(1);
+  const [pageSize, setPageSize] = useState<number | null>(null);
+  const [total, setTotal] = useState<number | null>(null);
 
-  const onFinish = async (query: Query) => {
-    console.log("query:", query);
+  const [form] = Form.useForm();
+  const { handleLoading } = useLoader();
+
+  useEffect(() => {
+    if (!page) return;
+    form.submit();
+  }, [form, page]);
+
+  const onFinish = async (data: SearchParams) => {
+    const params: SearchParams = {};
+
+    for (const param in data) {
+      const value = data[param];
+      if (!value) continue;
+      params[param] = value;
+    }
+
+    handleLoading(true);
+    const [searchResult] = await search({ ...params, page });
+    handleLoading(false);
+
+    if (!searchResult) return;
+
+    const { data: properties, total, per_page } = searchResult as SearchResult;
+
+    if (!properties) return;
+    setProperties(properties);
+    setTotal(total);
+    setPageSize(per_page);
   };
 
   return (
@@ -80,6 +112,20 @@ export default function Index() {
           </Col>
         </Row>
       </Form>
+      <Divider orientation="right" plain />
+      <Pagination
+        onChange={(newPage) => {
+          setPage(newPage);
+        }}
+        current={page}
+        total={total ?? 1}
+        pageSize={pageSize ?? 1}
+      />
+      <div className={styles.results}>
+        {properties.map((property, index) => {
+          return <div key={index}>{property.title}</div>;
+        })}
+      </div>
     </div>
   );
 }

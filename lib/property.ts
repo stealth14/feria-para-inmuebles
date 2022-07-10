@@ -149,3 +149,26 @@ export function useProperty(id: string) {
     isError: error,
   };
 }
+
+export interface SearchResult {
+  current_page: number;
+  data: Property[];
+  total: number;
+  per_page: number;
+}
+
+export async function search(params) {
+  try {
+    const url = "/search";
+
+    const response = await api.get(url, {
+      params,
+    });
+
+    const searchResult: SearchResult = response.data;
+
+    return [searchResult, null];
+  } catch (error: any) {
+    return [null, error];
+  }
+}

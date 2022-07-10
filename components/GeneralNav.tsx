@@ -33,7 +33,6 @@ export default function GeneralNav() {
                 }}
               >
                 <FontAwesomeIcon size="2x" color="white" icon={faHouseUser} />{" "}
-                <span>INICIO</span>
               </AnchorBase>
             )}
           </div>
