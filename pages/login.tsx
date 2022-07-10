@@ -5,19 +5,22 @@ import User from "@/lib/auth";
 import { useAuth } from "@/lib/auth";
 import { useRouter } from "next/router";
 import lang from "@/constants/lang";
+import { useLoader } from "@/hocs/withLoader";
 
 export default function Login() {
   const [form] = Form.useForm();
   const { login } = useAuth();
   const router = useRouter();
-
-  useEffect(() => {
-    console.log("rendered");
-  }, []);
+  const { handleLoading } = useLoader();
 
   const onFinish = async (submittedUser: User) => {
-    const [loggedUser, error] = await login(submittedUser);
-    if (loggedUser) {
+    handleLoading(true);
+
+    const [user, error] = await login(submittedUser);
+
+    handleLoading(false);
+
+    if (user) {
       router.push("/properties");
     }
 

@@ -60,9 +60,9 @@ function useAuthProvider() {
   async function login(user: User) {
     try {
       const response = await publicApi.post("/login", user);
-      const loggedUser = response.data;
-      handleUser(loggedUser);
-      return [loggedUser, null];
+      
+      handleUser(response.data as User);
+      return [user, null];
     } catch (error) {
       return [null, error];
     }
