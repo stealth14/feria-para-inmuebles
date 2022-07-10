@@ -92,6 +92,7 @@ function useAuthProvider() {
 
       const savedUser = response.data.user;
       Cookies.set("user", savedUser);
+      Cookies.set("token", response.data.token);
       handleUser(savedUser);
       return [savedUser, null];
     } catch (error: any) {

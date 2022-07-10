@@ -1,7 +1,8 @@
+/* eslint-disable @next/next/no-img-element */
 import React, { useState } from "react";
 import { Upload, Modal } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
-import styles from "./PhotosPicker.module.scss";
+import styles from "./PhotoPicker.module.scss";
 import type { UploadProps, UploadFile } from "antd/es/upload/interface";
 import { RcFile } from "antd/lib/upload";
 
@@ -14,14 +15,14 @@ function getBase64(file: RcFile): Promise<string | ArrayBuffer> {
   });
 }
 
-interface PhotosPickerProps extends UploadProps {
+interface PhotoPickerProps extends UploadProps {
   fileList: UploadFile[];
   handleFileList: (fileList: UploadFile[]) => void;
   maxCount: number;
 }
 
-export default function PhotosPicker(props: PhotosPickerProps) {
-  const { handleFileList, fileList, maxCount } = props;
+export default function PhotoPicker(props: PhotoPickerProps) {
+  const { handleFileList, fileList, maxCount = 3, ...uploadProps } = props;
 
   const [previewVisible, setPreviewVisible] = useState(false);
   const [previewImage, setPreviewImage] = useState("");
@@ -43,36 +44,32 @@ export default function PhotosPicker(props: PhotosPickerProps) {
     );
   };
 
-  const uploadProps: UploadProps = {
-    onRemove: (file) => {
-      const index = fileList.indexOf(file);
-      const newFileList = fileList.slice();
-      newFileList.splice(index, 1);
-      handleFileList(newFileList);
-    },
-    multiple: true,
-    beforeUpload: (file, selectedFileList) => {
-      const uploadFiles = selectedFileList.map((file) => {
-        return {
-          uid: file.uid,
-          name: file.name,
-          originFileObj: file,
-        } as UploadFile;
-      });
-
-      handleFileList([...fileList, ...uploadFiles]);
-
-      return false;
-    },
-    fileList,
-  };
-
   return (
     <div>
       <Upload
         {...uploadProps}
+        onRemove={(file) => {
+          const index = fileList.indexOf(file);
+          const newFileList = fileList.slice();
+          newFileList.splice(index, 1);
+          handleFileList(newFileList);
+        }}
+        beforeUpload={(_, selectedFileList) => {
+          const uploadFiles = selectedFileList.map((file) => {
+            return {
+              uid: file.uid,
+              name: file.name,
+              originFileObj: file,
+            } as UploadFile;
+          });
+
+          handleFileList([...fileList, ...uploadFiles]);
+
+          return false;
+        }}
+        fileList={fileList}
         accept="image/*"
-        maxCount={maxCount ?? 3}
+        maxCount={maxCount}
         listType="picture-card"
         onPreview={handlePreview}
       >

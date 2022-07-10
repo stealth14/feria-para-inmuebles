@@ -3,7 +3,7 @@ import { Form, Input, Button, Col, Row, Select } from "antd";
 import Property, { update, create } from "@/lib/property";
 import { useRouter } from "next/router";
 import FeatureSelect from "@/components/properties/FeatureSelect";
-import PhotosPicker from "@/components/globals/PhotosPicker";
+import PhotoPicker from "@/components/globals/PhotoPicker";
 import lang from "@/constants/lang";
 import styles from "./add.module.scss";
 import { parseQuery } from "@/lib/utils";
@@ -14,15 +14,20 @@ const { Option } = Select;
 
 export default function Add() {
   const router = useRouter();
+  const { query, isReady } = router;
+
   const { handleLoading } = useLoader();
 
-  const { query, isReady } = router;
   const [property, setProperty] = useState<Property | null | undefined>(
     undefined
   );
   const [fileList, setFileList] = useState<UploadFile[]>([]);
 
   const [form] = Form.useForm();
+
+  const handleFileList = (fileList: UploadFile[]) => {
+    setFileList([...fileList]);
+  };
 
   /** Initialize uncontrolled fields*/
   useEffect(() => {
@@ -73,10 +78,6 @@ export default function Add() {
     }
 
     handleLoading(false);
-  };
-
-  const handleFileList = (fileList: UploadFile[]) => {
-    setFileList([...fileList]);
   };
 
   return (
@@ -171,7 +172,7 @@ export default function Add() {
             <div className={styles.subtitle}>
               <h3>Fotos</h3>
             </div>
-            <PhotosPicker
+            <PhotoPicker
               multiple={true}
               maxCount={4}
               handleFileList={handleFileList}

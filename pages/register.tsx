@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import styles from "./register.module.scss";
 import { Form, Input, Button, Col, Row } from "antd";
 import User from "@/lib/auth";
-import PhotosPicker from "@/components/globals/PhotosPicker";
+import PhotoPicker from "@/components/globals/PhotoPicker";
 import { useAuth } from "@/lib/auth";
 import { useRouter } from "next/router";
 import lang from "@/constants/lang";
@@ -24,29 +24,14 @@ export default function Register() {
     }
 
     handleLoading(true);
-    const [savedUser, error] = await register({
+    const [savedUser] = await register({
       ...user,
       avatar: fileList[0].originFileObj,
     });
 
-    handleLoading(true);
+    handleLoading(false);
 
     if (savedUser) router.push("/properties");
-
-    if (error) {
-      if (error.response) {
-        //handle exceptions
-        const exceptions = JSON.parse(error.response.data);
-
-        var alertMessage = "" as string;
-
-        for (const exception in exceptions) {
-          alertMessage = `${exceptions[exception]}` + "\n";
-        }
-
-        alert(alertMessage);
-      }
-    }
   };
 
   const handleFileList = (fileList: UploadFile[]) => {
@@ -137,7 +122,8 @@ export default function Register() {
         </Row>
         <Row>
           <Col span={24}>
-            <PhotosPicker
+            <PhotoPicker
+              multiple={false}
               maxCount={1}
               handleFileList={handleFileList}
               fileList={fileList}
