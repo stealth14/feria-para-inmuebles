@@ -74,10 +74,6 @@ const PropertiesList = (props: PropertiesList) => {
     return <></>;
   }
 
-  if (isError) {
-    return <div className={styles.isError}>Error</div>;
-  }
-
   if (properties?.length === 0) {
     return <div className={styles.noProperties}>No properties found</div>;
   }
