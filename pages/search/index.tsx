@@ -8,7 +8,7 @@ import { useLoader } from "@/hocs/withLoader";
 import PropertyCard from "@/components/properties/PropertyCard";
 import ButtonBase from "@/components/globals/ButtonBase";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
+import { faPhone } from "@fortawesome/free-solid-svg-icons";
 import "@/components/globals/Button";
 import { useRouter } from "next/router";
 import { UndoOutlined } from "@ant-design/icons";
@@ -168,7 +168,7 @@ export default function Index() {
                       >
                         <FontAwesomeIcon
                           className={styles.ellipsis}
-                          icon={faArrowRight}
+                          icon={faPhone}
                         />
                       </ButtonBase>
                     </div>
