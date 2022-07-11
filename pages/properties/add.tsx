@@ -9,6 +9,7 @@ import styles from "./add.module.scss";
 import { parseQuery } from "@/lib/utils";
 import type { UploadFile } from "antd/es/upload/interface";
 import { useLoader } from "@/hocs/withLoader";
+import { route } from "next/dist/server/router";
 
 const { Option } = Select;
 
@@ -78,6 +79,8 @@ export default function Add() {
     }
 
     handleLoading(false);
+
+    router.push("/properties")
   };
 
   return (
