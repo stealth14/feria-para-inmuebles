@@ -56,6 +56,7 @@ export default function Index() {
 
   const onReset = () => {
     form.resetFields();
+    form.submit();
   };
 
   return (
