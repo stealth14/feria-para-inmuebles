@@ -140,7 +140,7 @@ export default function Index() {
                     <div className={styles.action}>
                       <ButtonBase
                         onClick={() => {
-                          router.push(`/properties/${property.id}`);
+                          window.open("https://wa.me/593992825956", "_blank");
                         }}
                       >
                         <FontAwesomeIcon
