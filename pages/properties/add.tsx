@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Form, Input, Button, Col, Row, Select } from "antd";
-import Property, { update, create } from "@/lib/property";
+import Property, { update, create, resolveImage } from "@/lib/property";
 import { useRouter } from "next/router";
 import FeatureSelect from "@/components/properties/FeatureSelect";
 import PhotoPicker from "@/components/globals/PhotoPicker";
@@ -9,6 +9,7 @@ import styles from "./add.module.scss";
 import { parseQuery } from "@/lib/utils";
 import type { UploadFile } from "antd/es/upload/interface";
 import { useLoader } from "@/hocs/withLoader";
+import { RcFile } from "antd/lib/upload";
 
 const { Option } = Select;
 
@@ -44,19 +45,30 @@ export default function Add() {
     }
   }, [form, isReady, query]);
 
+  useEffect(() => {
+    console.log("list:", fileList);
+  }, [fileList]);
+
   /** Load current property photos */
   useEffect(() => {
     if (!property) return;
-    const list = property.photos.map((photo, index) => {
-      return {
-        uid: `${index}`,
-        name: `image${index}`,
-        status: "done",
-        url: photo,
-      } as UploadFile;
-    });
 
-    setFileList(list);
+    (async () => {
+      const list: UploadFile[] = [];
+
+      for (const photo of property.photos) {
+        const blob = await resolveImage(photo as string);
+
+        if (!blob) continue;
+
+        list.push({
+          url: photo,
+          originFileObj: blob as RcFile,
+        } as UploadFile);
+      }
+
+      setFileList(list);
+    })();
   }, [property]);
 
   const onFinish = async (newProperty: Property) => {
@@ -68,18 +80,33 @@ export default function Add() {
     handleLoading(true);
 
     if (property) {
-      await update({
+      const [result] = await update({
         ...property,
         ...newProperty,
         photos: fileList,
       } as Property);
+      handleLoading(false);
+
+      if (!result) {
+        alert("error al guardar");
+        return;
+      }
+
+      router.push("/properties");
     } else {
-      await create({ ...newProperty, photos: fileList } as Property);
+      const [result] = await create({
+        ...newProperty,
+        photos: fileList,
+      } as Property);
+      handleLoading(false);
+
+      if (!result) {
+        alert("error al publicar");
+        return;
+      }
+
+      router.push("/properties");
     }
-
-    handleLoading(false);
-
-    router.push("/properties");
   };
 
   return (
@@ -132,6 +159,16 @@ export default function Add() {
                   label="Precio"
                   name="price"
                   rules={[{ required: true, message: "Precio obligatorio" }]}
+                >
+                  <Input type={"number"} />
+                </Form.Item>
+              </Col>
+
+              <Col span={24}>
+                <Form.Item
+                  label="Area"
+                  name="area"
+                  rules={[{ required: true, message: "Área obligatoriA" }]}
                 >
                   <Input type={"number"} />
                 </Form.Item>

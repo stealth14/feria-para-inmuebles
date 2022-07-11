@@ -172,3 +172,13 @@ export async function search(params) {
     return [null, error];
   }
 }
+
+export async function resolveImage(url: string): Promise<Blob> {
+  try {
+    const response = await fetch(url);
+
+    return await response.blob();
+  } catch (error: any) {
+    return null;
+  }
+}
