@@ -168,7 +168,7 @@ export default function Add() {
                 <Form.Item
                   label="Area"
                   name="area"
-                  rules={[{ required: true, message: "Área obligatoriA" }]}
+                  rules={[{ required: true, message: "Área obligatoria" }]}
                 >
                   <Input type={"number"} />
                 </Form.Item>

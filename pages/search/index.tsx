@@ -11,6 +11,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
 import "@/components/globals/Button";
 import { useRouter } from "next/router";
+import { UndoOutlined } from "@ant-design/icons";
 
 interface SearchParams {
   [param: string]: string | number;
@@ -53,19 +54,49 @@ export default function Index() {
     setPageSize(per_page);
   };
 
+  const onReset = () => {
+    form.resetFields();
+  };
+
   return (
     <div className={styles.container}>
       <Form layout={"vertical"} form={form} onFinish={onFinish}>
         <Row justify="center">
           <Col span={20}>
             <Input.Group style={{ margin: "30px auto" }} compact>
-              <Form.Item noStyle label="Título" name="title">
-                <Input style={{ width: "calc(100% - 76px)" }} />
+              <Form.Item
+                tooltip={"Coincidencias en título de publicación"}
+                noStyle
+                label="Título"
+                name="title"
+              >
+                <Input
+                  placeholder="Buscar por título.."
+                  style={{ width: "calc(100% - 130px)" }}
+                />
               </Form.Item>
               <Button htmlType="submit" type="primary">
                 Buscar
               </Button>
+              <Button
+                style={{ marginLeft: 10 }}
+                onClick={onReset}
+                type="dashed"
+                icon={<UndoOutlined />}
+              />
             </Input.Group>
+          </Col>
+        </Row>
+        <Row justify="center">
+          <Col span={12}>
+            <Form.Item
+              tooltip={"Area en metros cuadrados"}
+              style={{ marginLeft: 10 }}
+              label="Area"
+              name="area"
+            >
+              <Input type={"number"} />
+            </Form.Item>
           </Col>
         </Row>
         <Row justify="center">
@@ -75,14 +106,6 @@ export default function Index() {
               align="center"
               name={"bathrooms"}
               label="Baños"
-            />
-          </Col>
-          <Col xs={24} sm={12} md={12} lg={12} xl={12}>
-            <FeatureSelect
-              required={false}
-              align="center"
-              name={"area"}
-              label="Area"
             />
           </Col>
           <Col xs={24} sm={12} md={12} lg={12} xl={12}>
