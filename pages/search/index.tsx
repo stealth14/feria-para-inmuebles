@@ -5,6 +5,13 @@ import FeatureSelect from "@/components/properties/FeatureSelect";
 import styles from "./search.module.scss";
 import { useLoader } from "@/hocs/withLoader";
 
+import PropertyCard from "@/components/properties/PropertyCard";
+import ButtonBase from "@/components/globals/ButtonBase";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
+import "@/components/globals/Button";
+import { useRouter } from "next/router";
+
 interface SearchParams {
   [param: string]: string | number;
 }
@@ -14,7 +21,7 @@ export default function Index() {
   const [page, setPage] = useState<number | null>(1);
   const [pageSize, setPageSize] = useState<number | null>(null);
   const [total, setTotal] = useState<number | null>(null);
-
+  const router = useRouter();
   const [form] = Form.useForm();
   const { handleLoading } = useLoader();
 
@@ -122,9 +129,32 @@ export default function Index() {
         pageSize={pageSize ?? 1}
       />
       <div className={styles.results}>
-        {properties.map((property, index) => {
-          return <div key={index}>{property.title}</div>;
-        })}
+        <div className={styles.list}>
+          {properties.map((property) => {
+            return (
+              <PropertyCard
+                key={property.id}
+                property={property}
+                actions={
+                  <div className={styles.actions}>
+                    <div className={styles.action}>
+                      <ButtonBase
+                        onClick={() => {
+                          router.push(`/properties/${property.id}`);
+                        }}
+                      >
+                        <FontAwesomeIcon
+                          className={styles.ellipsis}
+                          icon={faArrowRight}
+                        />
+                      </ButtonBase>
+                    </div>
+                  </div>
+                }
+              />
+            );
+          })}
+        </div>
       </div>
     </div>
   );
