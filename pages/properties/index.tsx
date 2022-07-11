@@ -47,7 +47,6 @@ function Index() {
 
       <div className={styles.content}>
         <Row justify={"center"}>
-          <span>4.769 Departamentos quito en alquiler en Ecuador</span>
         </Row>
       </div>
       <PropertiesList
